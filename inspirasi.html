@@ -1,0 +1,1132 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kisah Sukses Startup Lokal yang Go International | Blog Anda</title>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --gray: #6c757d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            margin-bottom: 50px;
+            border-radius: 0 0 20px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') center/cover;
+            opacity: 0.1;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .article-meta {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .author-img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            margin-right: 15px;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+
+}
+        
+        .meta-text {
+            text-align: left;
+        }
+        
+        .meta-text .author-name {
+            font-weight: 600;
+            display: block;
+        }
+        
+        .meta-text .publish-date {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .reading-time {
+            display: flex;
+            align-items: center;
+            margin-left: 20px;
+            padding-left: 20px;
+            border-left: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .reading-time i {
+            margin-right: 8px;
+        }
+        
+        .article-content {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 50px;
+            margin-bottom: 50px;
+        }
+        
+        .intro {
+            font-size: 1.15rem;
+            margin-bottom: 40px;
+            color: var(--gray);
+            border-left: 4px solid var(--accent);
+            padding-left: 25px;
+            line-height: 1.7;
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin: 50px 0 25px;
+            font-size: 1.8rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--accent);
+            border-radius: 3px;
+        }
+        
+        h3 {
+            color: var(--secondary);
+            margin: 35px 0 20px;
+            font-size: 1.5rem;
+        }
+        
+        p {
+            margin-bottom: 25px;
+            font-size: 1.08rem;
+            line-height: 1.7;
+        }
+        
+        .story-card {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 40px;
+            border-left: 4px solid var(--accent);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .story-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .company-logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        
+        .story-title {
+            font-size: 1.4rem;
+            color: var(--dark);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .founder-info {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+        }
+        
+        .founder-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+            border: 3px solid var(--accent);
+        }
+        
+        .founder-text h4 {
+            margin-bottom: 5px;
+            color: var(--secondary);
+        }
+        
+        .founder-text p {
+            margin-bottom: 0;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        .milestone {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        
+        .milestone-year {
+            min-width: 80px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .milestone-content {
+            flex: 1;
+        }
+        
+        .img-container {
+            margin: 35px 0;
+            text-align: center;
+        }
+        
+        .article-img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            margin: 25px 0;
+            border: 1px solid #eee;
+        }
+        
+        .caption {
+
+
+font-size: 0.95rem;
+            color: var(--gray);
+            margin-top: 15px;
+            text-align: center;
+            font-style: italic;
+        }
+        
+        .chart-container {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin: 35px 0;
+            border: 1px solid #eee;
+        }
+
+        .chart-container img{
+            width: 100%;
+        }
+        
+        .chart-container h4 {
+            margin-bottom: 20px;
+            color: var(--dark);
+            font-size: 1.2rem;
+        }
+        
+        ul, ol {
+            margin-bottom: 25px;
+            padding-left: 25px;
+        }
+        
+        li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
+        .highlight-box {
+            background-color: #f0f8ff;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 30px 0;
+            border-left: 4px solid var(--success);
+        }
+        
+        .highlight-box h3 {
+            color: var(--success);
+            margin-top: 0;
+        }
+        
+        .quote-box {
+            background-color: #fff8f0;
+            padding: 30px;
+            border-radius: 8px;
+            margin: 30px 0;
+            border-left: 4px solid var(--accent);
+            position: relative;
+        }
+        
+        .quote-box::before {
+            content: '"';
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            font-size: 4rem;
+            color: rgba(233, 196, 106, 0.2);
+            font-family: serif;
+        }
+        
+        .quote-text {
+            font-size: 1.2rem;
+            font-style: italic;
+            color: var(--secondary);
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .quote-author {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .conclusion {
+            background: linear-gradient(135deg, #f5f0ff, #e6f0ff);
+            padding: 40px;
+            border-radius: 10px;
+            margin: 50px 0 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .conclusion::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%232a9d8f" opacity="0.1"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>') center/contain no-repeat;
+        }
+        
+        .conclusion h2 {
+            color: var(--primary);
+        }
+        
+        .conclusion h2::after {
+            background-color: var(--primary);
+        }
+        
+        .share-buttons {
+            display: flex;
+            justify-content: center;
+            margin: 50px 0;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .share-btn {
+            padding: 12px 25px;
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .share-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .facebook {
+            background-color: #3b5998;
+        }
+        
+        .twitter {
+            background-color: #1da1f2;
+        }
+        
+        .linkedin {
+            background-color: #0077b5;
+
+
+}
+        
+        .whatsapp {
+            background-color: #25d366;
+        }
+        
+        .share-icon {
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .related-articles {
+            margin: 60px 0;
+        }
+        
+        .related-title {
+            font-size: 1.8rem;
+            color: var(--dark);
+            margin-bottom: 40px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .related-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--primary);
+            border-radius: 3px;
+        }
+        
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+        }
+        
+        .related-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .related-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .related-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .related-card:hover .related-img {
+            transform: scale(1.05);
+        }
+        
+        .related-content {
+            padding: 25px;
+        }
+        
+        .related-content h3 {
+            margin: 0 0 15px;
+            font-size: 1.3rem;
+            line-height: 1.4;
+        }
+        
+        .related-content p {
+            font-size: 0.95rem;
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+        
+        .read-more {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 25px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(42, 157, 143, 0.3);
+        }
+        
+        .read-more:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(42, 157, 143, 0.4);
+        }
+        
+        .read-more i {
+            margin-left: 8px;
+            font-size: 0.9rem;
+            transition: transform 0.3s;
+        }
+        
+        .read-more:hover i {
+            transform: translateX(3px);
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            color: white;
+            margin-bottom: 25px;
+            font-size: 1.3rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary);
+        }
+        
+        .footer-column p {
+            color: #adb5bd;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+
+.footer-column ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .footer-column li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-column a {
+            color: #adb5bd;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+            display: inline-block;
+        }
+        
+        .footer-column a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .footer-column a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 30px;
+            color: #adb5bd;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        
+        /* Animasi */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .story-card {
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        .story-card:nth-child(1) { animation-delay: 0.1s; }
+        .story-card:nth-child(2) { animation-delay: 0.2s; }
+        .story-card:nth-child(3) { animation-delay: 0.3s; }
+        
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.4rem;
+            }
+            
+            .article-content {
+                padding: 40px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+            }
+            
+            .nav-links {
+                margin-top: 25px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .nav-links li {
+                margin: 0 10px 10px;
+            }
+            
+            .hero {
+                padding: 80px 0;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .article-meta {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .reading-time {
+                margin-left: 0;
+                padding-left: 0;
+                border-left: none;
+                margin-top: 15px;
+            }
+            
+            .article-content {
+                padding: 30px;
+            }
+            
+            .share-buttons {
+                gap: 10px;
+            }
+            
+            .share-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .article-content {
+                padding: 25px 20px;
+            }
+            
+            .story-card {
+                padding: 25px 20px;
+
+
+}
+            
+            .related-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+ 
+    
+    <section class="hero">
+        <div class="hero-content">
+            <div class="container">
+                <h1>Kisah Sukses Startup Lokal yang Go International</h1>
+                <p>Inspirasi dari perusahaan Indonesia yang berhasil menaklukkan pasar global</p>
+                
+                <div class="article-meta">
+                    <img src="asset/caung.jpg" alt="Penulis" class="author-img">
+                    <div class="meta-text">
+                        <span class="author-name">Muhamad Novreysa</span>
+                        <span class="publish-date">Dipublikasikan:  15 April 2025</span>
+                    </div>
+                    <div class="reading-time">
+                        <i class="far fa-clock"></i>
+                        <span>12 min read</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <div class="container">
+        <article class="article-content">
+            <p class="intro">Di tengah tantangan global, beberapa startup lokal Indonesia justru berhasil menembus pasar internasional dan bersaing dengan perusahaan global. Artikel ini akan mengupas tiga kisah inspiratif startup Indonesia yang berhasil go international, strategi mereka, dan pelajaran yang bisa kita ambil.</p>
+            
+            <h2>Mengapa Startup Lokal Bisa Go International?</h2>
+            <p>Sebelum masuk ke kisah-kisah inspiratif, mari kita pahami dulu mengapa beberapa startup lokal mampu bersaing di kancah global:</p>
+            
+            <div class="img-container">
+                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Startup Global" class="article-img">
+                <p class="caption">Gambar 1: Ilustrasi</p>
+            </div>
+            
+            <ul>
+                <li><strong>Solusi universal</strong> - Menyelesaikan masalah yang dialami banyak orang di berbagai negara</li>
+                <li><strong>Teknologi adaptif</strong> - Mampu beradaptasi dengan kebutuhan pasar berbeda</li>
+                <li><strong>Tim yang kompeten</strong> - SDM berkualitas dengan visi global</li>
+                <li><strong>Model bisnis scalable</strong> - Bisa berkembang tanpa hambatan geografis</li>
+                <li><strong>Dukungan ekosistem</strong> - Akses ke pendanaan dan jaringan internasional</li>
+            </ul>
+            
+            <div class="story-card">
+                <img src="asset/traveloka.webp" alt="Traveloka Logo" class="company-logo">
+                <h3 class="story-title">Traveloka: Dari Jakarta ke 8 Negara Asia Tenggara</h3>
+                
+                <div class="founder-info">
+                    <img src="asset/CEO traveloka.webp" alt="Pendiri Traveloka" class="founder-img">
+
+<div class="founder-text">
+                        <h4>Ferry Unardi</h4>
+                        <p>Co-founder & CEO Traveloka</p>
+                    </div>
+                </div>
+                
+                <p>Traveloka memulai perjalanannya pada tahun 2012 sebagai mesin pencari tiket pesawat. Kini, platform ini telah berkembang menjadi superapp perjalanan terkemuka di Asia Tenggara.</p>
+                
+                <h4>Perjalanan Ekspansi:</h4>
+                <div class="milestone">
+                    <div class="milestone-year">2012</div>
+                    <div class="milestone-content">Didirikan di Jakarta dengan fokus awal pada pencarian tiket pesawat</div>
+                </div>
+                <div class="milestone">
+                    <div class="milestone-year">2014</div>
+                    <div class="milestone-content">Meluncurkan layanan pemesanan hotel</div>
+                </div>
+                <div class="milestone">
+                    <div class="milestone-year">2015</div>
+                    <div class="milestone-content">Ekspansi pertama ke Thailand</div>
+                </div>
+                <div class="milestone">
+                    <div class="milestone-year">2017</div>
+                    <div class="milestone-content">Menjadi unicorn pertama Indonesia</div>
+                </div>
+                <div class="milestone">
+                    <div class="milestone-year">2023</div>
+                    <div class="milestone-content">Beroperasi di 8 negara dengan 40 juta pengguna aktif bulanan</div>
+                </div>
+                
+                <div class="img-container">
+                    <img src="asset/traveloka.png" alt="Traveloka Office" class="article-img">
+                    <p class="caption">Gambar 2: Kantor Traveloka </p>
+                </div>
+                
+                <div class="quote-box">
+                    <p class="quote-text">"Kunci kesuksesan kami adalah memahami kebutuhan lokal tetapi dengan pendekatan global. Kami tidak hanya membawa produk Indonesia ke luar negeri, tapi menciptakan solusi yang benar-benar sesuai dengan kebutuhan masing-masing pasar."</p>
+                    <p class="quote-author">- Ferry Unardi, Co-founder Traveloka</p>
+                </div>
+                
+                <div class="highlight-box">
+                    <h3>Strategi Ekspansi Traveloka</h3>
+                    <ul>
+                        <li><strong>Localized approach</strong> - Menyesuaikan produk dengan budaya dan kebutuhan lokal</li>
+                        <li><strong>Strategic partnership</strong> - Bermitra dengan penyedia layanan lokal di setiap negara</li>
+                        <li><strong>Product diversification</strong> - Dari tiket pesawat ke superapp dengan berbagai layanan</li>
+                        <li><strong>Talent acquisition</strong> - Merekrut talenta lokal di setiap negara ekspansi</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="story-card">
+                <img src="asset/J&T.png" alt="J&T Express Logo" class="company-logo">
+                <h3 class="story-title">J&T Express: Dominasi Logistik Asia dari Indonesia</h3>
+                
+                <div class="founder-info">
+                    <img src="asset/CEO J&T.jpg" alt="Pendiri J&T" class="founder-img">
+                    <div class="founder-text">
+                        <h4>Jet Lee</h4>
+                        <p>Founder J&T Express</p>
+                    </div>
+                </div>
+
+                
+<p>Berdiri tahun 2015, J&T Express awalnya hanya melayani pengiriman di Jawa Barat. Kini, mereka menjadi salah satu penyedia logistik terbesar di Asia dengan jaringan di 13 negara.</p>
+                
+                <div class="chart-container">
+                    <h4>Preferensi Brand Logistik Gen Z Saat Belanja Online</h4>
+                    <img src="asset/J&T Report.png" alt="Grafik J&T" class="article-img">
+                    <p class="caption">Sumber: GoodStats Data Report 2023</p>
+                </div>
+                
+                <h4>Faktor Kesuksesan:</h4>
+                <ul>
+                    <li><strong>Model franchise</strong> - Memungkinkan ekspansi cepat dengan modal relatif kecil</li>
+                    <li><strong>Teknologi tracking</strong> - Sistem pelacakan real-time yang handal</li>
+                    <li><strong>Harga kompetitif</strong> - Menawarkan harga lebih murah dari kompetitor global</li>
+                    <li><strong>Jaringan luas</strong> - Ribuan titik layanan di seluruh Asia</li>
+                </ul>
+                
+                <div class="img-container">
+                    <img src="asset/distribusi J&T.webp" alt="J&T Operation" class="article-img">
+                    <p class="caption">Gambar 3: Pusat distribusi J&T Express di Tangerang</p>
+                </div>
+                
+                <div class="highlight-box">
+                    <h3>Prestasi Global J&T Express</h3>
+                    <ul>
+                        <li>Melayani lebih dari 2 miliar pengiriman per tahun</li>
+                        <li>Mempekerjakan lebih dari 350.000 karyawan di seluruh dunia</li>
+                        <li>Mengoperasikan 2.500+ hub dan gudang distribusi</li>
+                        <li>Memiliki 30.000+ titik layanan di 13 negara</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="story-card">
+                <img src="asset/kopi kenangan.png" alt="Kopi Kenangan Logo" class="company-logo">
+                <h3 class="story-title">Kopi Kenangan: Membawa Rasa Indonesia ke Dunia</h3>
+                
+                <div class="founder-info">
+                    <img src="asset/CEO kopi kenangan.webp" alt="Pendiri Kopi Kenangan" class="founder-img">
+                    <div class="founder-text">
+                        <h4>Edward Tirtanata</h4>
+                        <p>Co-founder Kopi Kenangan</p>
+                    </div>
+                </div>
+                
+                <p>Dari gerai pertama di Jakarta tahun 2017, Kopi Kenangan kini telah berekspansi ke Malaysia, Singapura, dan sedang mempersiapkan peluncuran di Timur Tengah.</p>
+                
+                <h4>Strategi Globalisasi:</h4>
+                <ul>
+                    <li><strong>Produk unik</strong> - Menawarkan varian kopi khas Indonesia</li>
+                    <li><strong>Branding modern</strong> - Desain kontemporer yang menarik generasi muda global</li>
+                    <li><strong>Operasional efisien</strong> - Model grab-and-go dengan teknologi self-order</li>
+                    <li><strong>Adaptasi lokal</strong> - Menyesuaikan rasa dengan preferensi pasar setempat</li>
+                </ul>
+                
+                <div class="img-container" style="height: auto;">
+                    <img src="asset/produk kopi kenangan.jpg" alt="Kopi Kenangan Store" class="article-img">
+
+
+                    
+<p class="caption">Gambar 4:Kopi Kenangan </p>
+                </div>
+                
+                <div class="quote-box">
+                    <p class="quote-text">"Kami tidak hanya menjual kopi, tapi juga cerita dan budaya Indonesia. Setiap tegukan Kopi Kenangan adalah perjalanan ke nusantara."</p>
+                    <p class="quote-author">- Edward Tirtanata, Co-founder Kopi Kenangan</p>
+                </div>
+                
+                <div class="chart-container">
+                    <h4>Milestones Summary Kopi Kenangan</h4>
+                    <img src="asset/pencapaian kopi kenangan.png" alt="Grafik Kopi Kenangan" class="article-img">
+                    <p class="caption">Sumber: Website Kopi Kenangan 2024</p>
+                </div>
+            </div>
+            
+            <div class="conclusion">
+                <h2>Pelajaran dari Kesuksesan Mereka</h2>
+                <p>Dari ketiga kisah sukses ini, kita bisa mengambil beberapa pelajaran berharga untuk startup yang ingin go international:</p>
+                
+                <ol>
+                    <li><strong>Solve real problems</strong> - Cari solusi untuk masalah universal yang dialami banyak orang</li>
+                    <li><strong>Think global from day one</strong> - Rancang produk dengan potensi global sejak awal</li>
+                    <li><strong>Localize, don't just translate</strong> - Sesuaikan produk dengan budaya lokal, bukan hanya bahasa</li>
+                    <li><strong>Build strong operations</strong> - Skalabilitas operasional kunci untuk ekspansi</li>
+                    <li><strong>Leverage local strengths</strong> - Manfaatkan keunikan dan kekuatan lokal sebagai nilai jual</li>
+                </ol>
+                
+                <p>Ekspansi internasional bukan tanpa tantangan, tetapi dengan strategi yang tepat dan eksekusi yang baik, startup lokal bisa bersaing di panggung global. Siapa tahu, startup Andalah yang akan menjadi kisah sukses berikutnya!</p>
+            </div>
+            
+            <div class="share-buttons">
+            
+
+<a href="#" class="share-btn facebook"><i class="fab fa-facebook-f share-icon"></i> Bagikan</a>
+                <a href="#" class="share-btn twitter"><i class="fab fa-twitter share-icon"></i> Tweet</a>
+                <a href="#" class="share-btn linkedin"><i class="fab fa-linkedin-in share-icon"></i> Share</a>
+                <a href="#" class="share-btn whatsapp"><i class="fab fa-whatsapp share-icon"></i> WhatsApp</a>
+            </div>
+        </article>
+        
+        <section class="related-articles">
+            <h2 class="related-title">Artikel Terkait</h2>
+            <div class="related-grid">
+                <div class="related-card">
+                    <img src="asset/blog1.jpg" alt="Artikel Terkait 1" class="related-img">
+                    <div class="related-content">
+                        <h3>5 Trend Bisnis Digital yang Akan Dominasi di 2025</h3>
+                        <p>Pelajari tren terbaru yang akan mengubah lanskap bisnis digital di tahun mendatang dan bagaimana mempersiapkannya...</p>    
+                        <a href="bisnis.html" class="read-more">Baca Selengkapnya <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="related-card">
+                    <img src="asset/blog2.jpg" alt="Artikel Terkait 2" class="related-img">
+                    <div class="related-content">
+                        <h3>7 Strategi Branding Digital untuk Pemula</h3>
+                        <p>Bagaimana membangun brand yang kuat di era digital? Temukan strategi praktis yang bisa langsung Anda terapkan...</p>    
+                        <a href="marketing.html" class="read-more">Baca Selengkapnya <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+             
+            </div>
+        </section>
+    </div>
+    
+    
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Tentang Kami</h3>
+                <p> Blog HIMABIDA adalah platform edukasi dan analisis tren bisnis digital terkini untuk membantu pebisnis dan profesional tetap kompetitif.</p>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Kategori</h3>
+                <ul>
+                    <li><a href="#">AI & Machine Learning</a></li>
+                    <li><a href="#">Blockchain & Web3</a></li>
+                    <li><a href="#">Digital Marketing</a></li>
+                    <li><a href="#">E-commerce</a></li>
+                    <li><a href="#">Teknologi Bisnis</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Navigasi</h3>
+                <ul>
+                    <li><a href="index.html#home">Home</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#structure">Structure</a></li>
+                    <li><a href="index.html#events">Events</a></li>
+                    <li><a href="index.html#blog">blog</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Hubungi Kami</h3>
+                <ul>
+                    <li><i class="fas fa-envelope"></i> Himabidanew@gmail.com</li>
+                    <li><i class="fas fa-phone"></i> +62 812 3456 7890</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Cikarang, Indonesia</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2025 by Himpunan Mahasiswa Bisnis Digital || All Right Reserved.</p>
+        </div>
+    </div>
+</footer>
+
+    
+    <script>
+        // Animasi saat scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const storyCards = document.querySelectorAll('.story-card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+        
+            storyCards.forEach(card => {
+                card.style.opacity = 0;
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
+                observer.observe(card);
+            });
+            
+            // Share buttons functionality
+            const shareButtons = document.querySelectorAll('.share-btn');
+            const articleUrl = window.location.href;
+            const articleTitle = document.title;
+            
+            shareButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    let shareUrl = '';
+                    
+                    if (button.classList.contains('facebook')) {
+                        shareUrl = "https://www.facebook.com/sharer/sharer.php?u=";{encodeURIComponent(articleUrl)};
+                    } else if (button.classList.contains('twitter')) {
+                        shareUrl = "https://twitter.com/intent/tweet?url=";{encodeURIComponent(articleUrl)}"&text=$";{encodeURIComponent(articleTitle)};
+                    } else if (button.classList.contains('linkedin')) {
+                    shareUrl = "https://www.linkedin.com/shareArticle?mini=true&url=";{encodeURIComponent(articleUrl)}"&title=$";{encodeURIComponent(articleTitle)};
+                    } else if (button.classList.contains('whatsapp')) {
+                    shareUrl = "https://wa.me/?text=";{encodeURIComponent(articleTitle + ' ' + articleUrl)};
+                    }
+                    
+                    window.open(shareUrl, '_blank', 'width=600,height=400');
+                });
+            });
+
+// Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Add animation to related cards on hover
+            const relatedCards = document.querySelectorAll('.related-card');
+            relatedCards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    const img = card.querySelector('.related-img');
+                    img.style.transform = 'scale(1.05)';
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    const img = card.querySelector('.related-img');
+                    img.style.transform = 'scale(1)';
+                });
+            });
+            
+            
+        });
+    </script>
+</body>
+</html>
