@@ -435,6 +435,13 @@ padding: 15px;
                 <h3>Layout E</h3>
                 <p>4 Pose (Grid 2x2)</p>
             </div>
+            <div class="layout-option" data-layout="F" data-poses="1">
+        <div class="layout-preview" style="background: #eee; height: 150px; display: grid; grid-template-rows: repeat(1, 1fr); gap: 5px;">
+            <div style="background: #ff6b6b;"></div>
+        </div>
+        <h3>Layout F</h3>
+        <p>1 Pose (Vertikal)</p>
+            </div>
         </div>
     </div>
     
@@ -729,6 +736,8 @@ padding: 15px;
                         document.querySelector('.layout-option[data-layout="D"]').click();
                     } else if (command.includes('layout e')) {
                         document.querySelector('.layout-option[data-layout="E"]').click();
+                    } else if (command.includes('layout f')) {
+                        document.querySelector('.layout-option[data-layout="F"]').click();
                     }
                     break;
                     
