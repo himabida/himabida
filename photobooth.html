@@ -166,7 +166,7 @@
         /* Halaman 4 - Editing */
         .edit-section {
             background: white;
-padding: 15px;
+            padding: 15px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             margin-bottom: 20px;
@@ -218,6 +218,43 @@ padding: 15px;
             border-color: #ff6b6b;
         }
         
+        /* NEW FRAME STYLES */
+        .photo-frame {
+            position: relative;
+            background: var(--frame-color, #ff6b6b);
+            padding: 40px; /* Sides and top padding */
+            padding-bottom: 120px; /* Bottom padding 3x larger (40px x 3) */
+            border-radius: 5px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            margin: 10px;
+        }
+        
+        .photo-frame img {
+            width: 100%;
+            display: block;
+            border-radius: 3px;
+        }
+        
+        .photo-footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 80px; /* 120px total - 40px padding */
+            background: var(--frame-color, #ff6b6b);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .photo-footer p {
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
         .photo-with-sticker {
             position: relative;
             display: inline-block;
@@ -231,8 +268,9 @@ padding: 15px;
             height: 80px;
             background-size: contain;
             background-repeat: no-repeat;
+            background-position: center;
             pointer-events: none;
-            z-index: 100; /* Pastikan di atas foto */
+            z-index: 100;
         }
         
         .final-photo {
@@ -255,7 +293,7 @@ padding: 15px;
             animation: fadeInOut 3s;
         }
 
-        /* NEW STYLES FOR TEMPLATES */
+        /* Template Styles */
         .template-options {
             display: flex;
             gap: 15px;
@@ -299,18 +337,17 @@ padding: 15px;
             background-position: center;
         }
         .template-frame {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    z-index: 10;
-    pointer-events: none;
-}
-
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            z-index: 10;
+            pointer-events: none;
+        }
         
         @keyframes fadeInOut {
             0% { opacity: 0; }
@@ -359,7 +396,6 @@ padding: 15px;
             background-color: #4CAF50;
         }
 
-
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.2); }
@@ -371,8 +407,7 @@ padding: 15px;
     <!-- Halaman 1 - Mulai -->
     <div id="page-start" class="page active">
         <h1>Photobooth <span> Bisnis Digital </span> </h1>
-        <img src=" hima2.png"   style="height: 150px; width: 150px; 
-         margin-bottom: 15px; margin-right: 10px;" class="hima" >
+        <img src="hima2.png" style="height: 150px; width: 150px; margin-bottom: 15px; margin-right: 10px;" class="hima">
         <button class="start-btn" id="start-btn">Mulai Photobooth</button>
     </div>
     
@@ -394,7 +429,7 @@ padding: 15px;
             </div>
             
             <div class="layout-option" data-layout="B" data-poses="3">
-<div class="layout-preview" style="background: #eee; height: 150px; display: grid; grid-template-rows: repeat(3, 1fr); gap: 5px;">
+                <div class="layout-preview" style="background: #eee; height: 150px; display: grid; grid-template-rows: repeat(3, 1fr); gap: 5px;">
                     <div style="background: #ff6b6b;"></div>
                     <div style="background: #667eea;"></div>
                     <div style="background: #4CAF50;"></div>
@@ -435,12 +470,13 @@ padding: 15px;
                 <h3>Layout E</h3>
                 <p>4 Pose (Grid 2x2)</p>
             </div>
+            
             <div class="layout-option" data-layout="F" data-poses="1">
-        <div class="layout-preview" style="background: #eee; height: 150px; display: grid; grid-template-rows: repeat(1, 1fr); gap: 5px;">
-            <div style="background: #ff6b6b;"></div>
-        </div>
-        <h3>Layout F</h3>
-        <p>1 Pose (Vertikal)</p>
+                <div class="layout-preview" style="background: #eee; height: 150px; display: grid; grid-template-rows: repeat(1, 1fr); gap: 5px;">
+                    <div style="background: #ff6b6b;"></div>
+                </div>
+                <h3>Layout F</h3>
+                <p>1 Pose (Vertikal)</p>
             </div>
         </div>
     </div>
@@ -483,7 +519,8 @@ padding: 15px;
             <button class="control-btn" id="capture-btn">Ambil Foto</button>
             <button class="control-btn" id="delete-btn">Hapus Terakhir</button>
         </div>
-<div id="photo-preview" style="display: none;">
+        
+        <div id="photo-preview" style="display: none;">
             <h3>Pratinjau Foto</h3>
             <div id="photos-container" class="final-photos"></div>
             <button class="control-btn" id="continue-btn">Lanjut ke Editing</button>
@@ -535,7 +572,7 @@ padding: 15px;
                 </div>
                 <div class="template-option" data-template="santai">
                     <img src="santai.png" alt="Santai Template">
-<p>Santai Style</p>
+                    <p>Santai Style</p>
                 </div>
                 <div class="template-option" data-template="meme">
                     <img src="meme.png" alt="Meme Template">
@@ -547,7 +584,6 @@ padding: 15px;
                 </div>
             </div>
         </div>
-
                     
         <div class="edit-section">
             <h3>Hasil Akhir</h3>
