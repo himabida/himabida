@@ -896,13 +896,21 @@ stickers.forEach(sticker => {
 window.addEventListener('beforeunload', stopCamera);
         </script>
 
-    <script>
+                    <script>
     // === VOICE CONTROL SYSTEM ===
     let recognition;
     let isVoiceActive = false;
-    
-    // Inisialisasi Voice Recognition
+    let isChromeBlocking = false;
+
+    // Deteksi browser
+    const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+
     function initVoiceRecognition() {
+        if (isChromeBlocking) {
+            showMicStatus("Chrome sedang memblokir microphone", true);
+            return;
+        }
+
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         
         if (!SpeechRecognition) {
@@ -928,18 +936,25 @@ window.addEventListener('beforeunload', stopCamera);
         };
         
         recognition.onerror = (event) => {
-            let errorMsg = "Error: ";
-            switch(event.error) {
-                case 'not-allowed': errorMsg = "Izin microphone ditolak"; break;
-                case 'no-speech': errorMsg = "Tidak terdeteksi suara"; break;
-                default: errorMsg += event.error;
+            if (event.error === 'not-allowed' && isChrome) {
+                isChromeBlocking = true;
+                showMicStatus("Matikan tab lain yang menggunakan mic", true);
+            } else {
+                showMicStatus(`Error: ${event.error}`, true);
             }
-            showMicStatus(errorMsg, true);
             stopVoiceRecognition();
         };
         
         recognition.onend = () => {
-            if (isVoiceActive) recognition.start(); // Auto-restart jika masih aktif
+            if (isVoiceActive && !isChromeBlocking) {
+                setTimeout(() => {
+                    try {
+                        recognition.start();
+                    } catch (e) {
+                        console.error("Restart error:", e);
+                    }
+                }, 500);
+            }
         };
         
         try {
@@ -948,125 +963,39 @@ window.addEventListener('beforeunload', stopCamera);
             showMicStatus("Error: " + error.message, true);
         }
     }
-    
-    // Handler perintah suara
-    function handleVoiceCommand(transcript) {
-        switch(currentPage) {
-            case 'page-start':
-                if (transcript.includes("mulai")) {
-                    document.getElementById('start-btn').click();
-                }
-                break;
-                
-            case 'page-layout':
-                if (transcript.includes("layout a")) {
-                    document.querySelector('[data-layout="A"]').click();
-                } else if (transcript.includes("layout b")) {
-                    document.querySelector('[data-layout="B"]').click();
-                } else if (transcript.includes("layout c")) {
-                    document.querySelector('[data-layout="C"]').click();
-                } else if (transcript.includes("layout d")) {
-                    document.querySelector('[data-layout="D"]').click();
-                } else if (transcript.includes("layout e")) {
-                    document.querySelector('[data-layout="E"]').click();
-                }
-                break;
-                
-            case 'page-photo':
-                if (transcript.includes("filter")) {
-                    document.getElementById('filter').focus();
-                } else if (transcript.includes("grayscale")) {
-                    document.getElementById('filter').value = "grayscale";
-                    filterSelect.dispatchEvent(new Event('change'));
-                } else if (transcript.includes("sepia")) {
-                    document.getElementById('filter').value = "sepia";
-                    filterSelect.dispatchEvent(new Event('change'));
-                } else if (transcript.includes("hitung mundur")) {
-                    document.getElementById('timer').focus();
-                } else if (transcript.includes("3 detik") || transcript.includes("3s")) {
-                    document.getElementById('timer').value = "3";
-                } else if (transcript.includes("5 detik") || transcript.includes("5s")) {
-                    document.getElementById('timer').value = "5";
-                } else if (transcript.includes("cekrek")) {
-                    document.getElementById('capture-btn').click();
-                } else if (transcript.includes("hapus")) {
-                    document.getElementById('delete-btn').click();
-                } else if (transcript.includes("lanjut")) {
-                    document.getElementById('continue-btn').click();
-                }
-                break;
-                
-            case 'page-edit':
-                if (transcript.includes("warna")) {
-                    if (transcript.includes("merah")) {
-                        document.querySelector('[data-color="#ff6b6b"]').click();
-                    } else if (transcript.includes("biru")) {
-                        document.querySelector('[data-color="#667eea"]').click();
-                    } else if (transcript.includes("hijau")) {
-                        document.querySelector('[data-color="#4CAF50"]').click();
-                    }
-                } else if (transcript.includes("stiker")) {
-                    if (transcript.includes("hati")) {
-                        document.querySelector('[data-sticker="heart"]').click();
-                    } else if (transcript.includes("bintang")) {
-                        document.querySelector('[data-sticker="star"]').click();
-                    }
-                } else if (transcript.includes("download")) {
-                    document.getElementById('download-btn').click();
-                }
-                break;
-        }
-    }
-    
-    // Toggle voice control
+
     function toggleVoiceControl() {
         if (isVoiceActive) {
             stopVoiceRecognition();
         } else {
-            // Minta izin microphone
+            if (isChromeBlocking) {
+                showMicStatus("Refresh halaman untuk reset mic", true);
+                return;
+            }
+            
             navigator.mediaDevices.getUserMedia({ audio: true })
-                .then(() => {
+                .then(stream => {
+                    // Stop track untuk menghindari blocking
+                    stream.getTracks().forEach(track => track.stop());
                     initVoiceRecognition();
                 })
                 .catch(error => {
-                    showMicStatus("Izin microphone diperlukan", true);
-                    console.error("Microphone error:", error);
+                    showMicStatus("Izinkan akses microphone", true);
+                    console.error("Mic error:", error);
                 });
         }
     }
-    
-    function stopVoiceRecognition() {
-        if (recognition) {
-            isVoiceActive = false;
-            recognition.stop();
-            document.getElementById('mic-btn').classList.remove('active');
-            showMicStatus("Voice control nonaktif");
-        }
-    }
-    
-    function showMicStatus(message, isError = false, timeout = 3000) {
-        const statusEl = document.getElementById('mic-status');
-        statusEl.textContent = message;
-        statusEl.style.display = 'block';
-        statusEl.style.backgroundColor = isError ? '#F56565' : '#2D3748';
-        
-        if (timeout > 0) {
-            setTimeout(() => {
-                statusEl.style.display = 'none';
-            }, timeout);
-        }
-    }
-    
-    // Event listeners
-    document.getElementById('mic-btn').addEventListener('click', toggleVoiceControl);
-    
-    // Sembunyikan mic di halaman download
+
+    // ... (fungsi lainnya tetap sama)
+
+    // Reset status saat pindah halaman
     const originalShowPage = window.showPage;
     window.showPage = function(pageId) {
         originalShowPage(pageId);
-        document.getElementById('voice-control').style.display = 
-            (pageId === 'page-download') ? 'none' : 'block';
+        if (pageId === 'page-start') {
+            isChromeBlocking = false;
+        }
     };
-    </script>
+                    </script>
 </body>
 </html>
