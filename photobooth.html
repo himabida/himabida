@@ -252,6 +252,58 @@
             display: none;
             animation: fadeInOut 3s;
         }
+
+        .voice-control {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+        text-align: center;
+    }
+    
+    .mic-btn {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: #ff6b6b;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        transition: all 0.3s;
+        border: none;
+    }
+
+        .mic-btn.active {
+        background: #4CAF50;
+        animation: pulse 1.5s infinite;
+    }
+    
+    .mic-btn i {
+        font-size: 20px;
+    }
+    
+    .mic-status {
+        position: absolute;
+        bottom: 60px;
+        right: 0;
+        background: rgba(0,0,0,0.8);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        width: max-content;
+        max-width: 200px;
+        display: none;
+    }
+
+        @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+        }
         
         @keyframes fadeInOut {
             0% { opacity: 0; }
@@ -281,7 +333,15 @@
          margin-bottom: 15px; margin-right: 10px;" class="hima" >
         <button class="start-btn" id="start-btn">Mulai Photobooth</button>
     </div>
-    
+    <div class="voice-control" id="voice-control">
+    <div class="mic-btn" id="mic-btn">
+        <i class="fas fa-microphone"></i>
+    </div>
+    <div class="mic-status" id="mic-status"></div>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <!-- Halaman 2 - Pilih Layout -->
     <div id="page-layout" class="page">
         <h2>Pilih Layout Foto</h2>
@@ -436,7 +496,7 @@
             Foto berhasil didownload!
         </div>
     </div>
-
+    
     <script>
         // Variabel Global
 let currentPage = "page-start";
@@ -835,5 +895,178 @@ stickers.forEach(sticker => {
 // Cleanup
 window.addEventListener('beforeunload', stopCamera);
         </script>
+
+    <script>
+    // === VOICE CONTROL SYSTEM ===
+    let recognition;
+    let isVoiceActive = false;
+    
+    // Inisialisasi Voice Recognition
+    function initVoiceRecognition() {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        
+        if (!SpeechRecognition) {
+            showMicStatus("Browser tidak mendukung voice control", true);
+            return;
+        }
+        
+        recognition = new SpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = false;
+        recognition.lang = 'id-ID';
+        
+        recognition.onstart = () => {
+            isVoiceActive = true;
+            document.getElementById('mic-btn').classList.add('active');
+            showMicStatus("Mendengarkan...");
+        };
+        
+        recognition.onresult = (event) => {
+            const transcript = event.results[event.results.length-1][0].transcript.toLowerCase().trim();
+            showMicStatus(`Terdeteksi: "${transcript}"`, false, 2000);
+            handleVoiceCommand(transcript);
+        };
+        
+        recognition.onerror = (event) => {
+            let errorMsg = "Error: ";
+            switch(event.error) {
+                case 'not-allowed': errorMsg = "Izin microphone ditolak"; break;
+                case 'no-speech': errorMsg = "Tidak terdeteksi suara"; break;
+                default: errorMsg += event.error;
+            }
+            showMicStatus(errorMsg, true);
+            stopVoiceRecognition();
+        };
+        
+        recognition.onend = () => {
+            if (isVoiceActive) recognition.start(); // Auto-restart jika masih aktif
+        };
+        
+        try {
+            recognition.start();
+        } catch (error) {
+            showMicStatus("Error: " + error.message, true);
+        }
+    }
+    
+    // Handler perintah suara
+    function handleVoiceCommand(transcript) {
+        switch(currentPage) {
+            case 'page-start':
+                if (transcript.includes("mulai")) {
+                    document.getElementById('start-btn').click();
+                }
+                break;
+                
+            case 'page-layout':
+                if (transcript.includes("layout a")) {
+                    document.querySelector('[data-layout="A"]').click();
+                } else if (transcript.includes("layout b")) {
+                    document.querySelector('[data-layout="B"]').click();
+                } else if (transcript.includes("layout c")) {
+                    document.querySelector('[data-layout="C"]').click();
+                } else if (transcript.includes("layout d")) {
+                    document.querySelector('[data-layout="D"]').click();
+                } else if (transcript.includes("layout e")) {
+                    document.querySelector('[data-layout="E"]').click();
+                }
+                break;
+                
+            case 'page-photo':
+                if (transcript.includes("filter")) {
+                    document.getElementById('filter').focus();
+                } else if (transcript.includes("grayscale")) {
+                    document.getElementById('filter').value = "grayscale";
+                    filterSelect.dispatchEvent(new Event('change'));
+                } else if (transcript.includes("sepia")) {
+                    document.getElementById('filter').value = "sepia";
+                    filterSelect.dispatchEvent(new Event('change'));
+                } else if (transcript.includes("hitung mundur")) {
+                    document.getElementById('timer').focus();
+                } else if (transcript.includes("3 detik") || transcript.includes("3s")) {
+                    document.getElementById('timer').value = "3";
+                } else if (transcript.includes("5 detik") || transcript.includes("5s")) {
+                    document.getElementById('timer').value = "5";
+                } else if (transcript.includes("cekrek")) {
+                    document.getElementById('capture-btn').click();
+                } else if (transcript.includes("hapus")) {
+                    document.getElementById('delete-btn').click();
+                } else if (transcript.includes("lanjut")) {
+                    document.getElementById('continue-btn').click();
+                }
+                break;
+                
+            case 'page-edit':
+                if (transcript.includes("warna")) {
+                    if (transcript.includes("merah")) {
+                        document.querySelector('[data-color="#ff6b6b"]').click();
+                    } else if (transcript.includes("biru")) {
+                        document.querySelector('[data-color="#667eea"]').click();
+                    } else if (transcript.includes("hijau")) {
+                        document.querySelector('[data-color="#4CAF50"]').click();
+                    }
+                } else if (transcript.includes("stiker")) {
+                    if (transcript.includes("hati")) {
+                        document.querySelector('[data-sticker="heart"]').click();
+                    } else if (transcript.includes("bintang")) {
+                        document.querySelector('[data-sticker="star"]').click();
+                    }
+                } else if (transcript.includes("download")) {
+                    document.getElementById('download-btn').click();
+                }
+                break;
+        }
+    }
+    
+    // Toggle voice control
+    function toggleVoiceControl() {
+        if (isVoiceActive) {
+            stopVoiceRecognition();
+        } else {
+            // Minta izin microphone
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(() => {
+                    initVoiceRecognition();
+                })
+                .catch(error => {
+                    showMicStatus("Izin microphone diperlukan", true);
+                    console.error("Microphone error:", error);
+                });
+        }
+    }
+    
+    function stopVoiceRecognition() {
+        if (recognition) {
+            isVoiceActive = false;
+            recognition.stop();
+            document.getElementById('mic-btn').classList.remove('active');
+            showMicStatus("Voice control nonaktif");
+        }
+    }
+    
+    function showMicStatus(message, isError = false, timeout = 3000) {
+        const statusEl = document.getElementById('mic-status');
+        statusEl.textContent = message;
+        statusEl.style.display = 'block';
+        statusEl.style.backgroundColor = isError ? '#F56565' : '#2D3748';
+        
+        if (timeout > 0) {
+            setTimeout(() => {
+                statusEl.style.display = 'none';
+            }, timeout);
+        }
+    }
+    
+    // Event listeners
+    document.getElementById('mic-btn').addEventListener('click', toggleVoiceControl);
+    
+    // Sembunyikan mic di halaman download
+    const originalShowPage = window.showPage;
+    window.showPage = function(pageId) {
+        originalShowPage(pageId);
+        document.getElementById('voice-control').style.display = 
+            (pageId === 'page-download') ? 'none' : 'block';
+    };
+    </script>
 </body>
 </html>
