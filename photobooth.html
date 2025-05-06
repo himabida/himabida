@@ -254,6 +254,50 @@ padding: 15px;
             display: none;
             animation: fadeInOut 3s;
         }
+
+        /* NEW STYLES FOR TEMPLATES */
+        .template-options {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .template-option {
+            width: 100px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .template-option:hover {
+            transform: scale(1.05);
+        }
+        .template-option img {
+            width: 100%;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+        }
+
+        .template-option p {
+            margin-top: 5px;
+            font-size: 12px;
+        }
+        .template-overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            pointer-events: none;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
         
         @keyframes fadeInOut {
             0% { opacity: 0; }
@@ -461,8 +505,30 @@ padding: 15px;
                 <div class="sticker" data-sticker="fire" style="background-image: url('https://cdn-icons-png.flaticon.com/512/599/599502.png')"></div>
             </div>
         </div>
-        
-        
+
+        <div class="edit-section">
+            <h3>Template Foto</h3>
+            <div class="template-options">
+                <div class="template-option" data-template="manga">
+                    <img src="manga.png" alt="Manga Template">
+                    <p>Manga Style</p>
+                </div>
+                <div class="template-option" data-template="santai">
+                    <img src="santai.png" alt="Santai Template">
+<p>Santai Style</p>
+                </div>
+                <div class="template-option" data-template="meme">
+                    <img src="meme.jpg" alt="Meme Template">
+                    <p>Meme Style</p>
+                </div>
+                <div class="template-option" data-template="astronot">
+                    <img src="astronot.jpg" alt="Astronot Template">
+                    <p>Astronot Style</p>
+                </div>
+            </div>
+        </div>
+
+                    
         <div class="edit-section">
             <h3>Hasil Akhir</h3>
             <div id="final-result" class="final-photos"></div>
@@ -1030,6 +1096,112 @@ padding: 15px;
                         finalCtx.drawImage(canvas, 0, index * imgHeight);
                     });
                 }
+
+            
+
+
+        // NEW TEMPLATE SYSTEM
+        const templates = {
+            manga: {
+                imgSrc: "manga.png",
+                apply: function(photoContainer) {
+                    // Remove any existing template overlay
+                    const existingOverlay = photoContainer.querySelector('.template-overlay');
+                    if (existingOverlay) {
+                        photoContainer.removeChild(existingOverlay);
+                    }
+                    
+                    // Create new overlay
+                    const overlay = document.createElement('div');
+                    overlay.className = 'template-overlay';
+                    overlay.style.backgroundImage = `url(${this.imgSrc})`;
+                    photoContainer.appendChild(overlay);
+                    
+                    // Adjust photo styling
+                    const img = photoContainer.querySelector('img');
+                    img.style.border = 'none';
+                    img.style.borderRadius = '0';
+                }
+            },
+            santai: {
+                imgSrc: "santai.png",
+                apply: function(photoContainer) {
+                    // Same structure as manga template
+                    const existingOverlay = photoContainer.querySelector('.template-overlay');
+                    if (existingOverlay) {
+                        photoContainer.removeChild(existingOverlay);
+                    }
+                    
+                    const overlay = document.createElement('div');
+                    overlay.className = 'template-overlay';
+                    overlay.style.backgroundImage = `url(${this.imgSrc})`;
+                    photoContainer.appendChild(overlay);
+                    
+                    const img = photoContainer.querySelector('img');
+                    img.style.border = 'none';
+                    img.style.borderRadius = '0';
+                }
+            },
+            meme: {
+                imgSrc: "meme.jpg",
+                apply: function(photoContainer) {
+                    // Same structure as manga template
+                    const existingOverlay = photoContainer.querySelector('.template-overlay');
+                    if (existingOverlay) {
+                        photoContainer.removeChild(existingOverlay);
+                    }
+                    
+                    const overlay = document.createElement('div');
+                    overlay.className = 'template-overlay';
+                    overlay.style.backgroundImage = `url(${this.imgSrc})`;
+                    photoContainer.appendChild(overlay);
+                    
+                    const img = photoContainer.querySelector('img');
+                    img.style.border = 'none';
+                    img.style.borderRadius = '0';
+                }
+            },
+            astronot: {
+                imgSrc: "astronot.jpg",
+                apply: function(photoContainer) {
+                    // Same structure as manga template
+                    const existingOverlay = photoContainer.querySelector('.template-overlay');
+                    if (existingOverlay) {
+                        photoContainer.removeChild(existingOverlay);
+                    }
+                    
+                    const overlay = document.createElement('div');
+                    overlay.className = 'template-overlay';
+                    overlay.style.backgroundImage = `url(${this.imgSrc})`;
+                    photoContainer.appendChild(overlay);
+                    
+                    const img = photoContainer.querySelector('img');
+                    img.style.border = 'none';
+                    img.style.borderRadius = '0';
+                }
+            }
+        };
+
+        // Initialize template buttons
+        function initTemplateButtons() {
+            document.querySelectorAll('.template-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const templateName = this.dataset.template;
+                    document.querySelectorAll('.photo-with-sticker').forEach(container => {
+                        templates[templateName].apply(container);
+                    });
+                });
+            });
+        }
+
+        // Call this when entering edit page
+        document.getElementById('continue-btn').addEventListener('click', function() {
+            showPage('page-edit');
+            renderFinalPhotos();
+            setTimeout(initTemplateButtons, 100); // Small delay to ensure DOM is ready
+        });
+
+     
                 
                 // Download
                 finalCanvas.toBlob(blob => {
