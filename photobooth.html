@@ -298,6 +298,19 @@ padding: 15px;
             background-repeat: no-repeat;
             background-position: center;
         }
+        .template-frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 10;
+    pointer-events: none;
+}
+
         
         @keyframes fadeInOut {
             0% { opacity: 0; }
@@ -1099,107 +1112,59 @@ padding: 15px;
 
             
 
+// Add this to your JavaScript
+const templates = {
+    manga: {
+        imgSrc: "manga.png",
+        photoPosition: { width: "80%", left: "10%", top: "15%" }
+    },
+    santai: {
+        imgSrc: "santai.png", 
+        photoPosition: { width: "75%", left: "12%", top: "20%" }
+    },
+    meme: {
+        imgSrc: "meme.png",
+        photoPosition: { width: "85%", left: "7%", top: "10%" }
+    },
+    astronot: {
+        imgSrc: "astronot.png",
+        photoPosition: { width: "70%", left: "15%", top: "25%" }
+    }
+};
 
-        // NEW TEMPLATE SYSTEM
-        const templates = {
-            manga: {
-                imgSrc: "manga.png",
-                apply: function(photoContainer) {
-                    // Remove any existing template overlay
-                    const existingOverlay = photoContainer.querySelector('.template-overlay');
-                    if (existingOverlay) {
-                        photoContainer.removeChild(existingOverlay);
-                    }
-                    
-                    // Create new overlay
-                    const overlay = document.createElement('div');
-                    overlay.className = 'template-overlay';
-                    overlay.style.backgroundImage = `url(${this.imgSrc})`;
-                    photoContainer.appendChild(overlay);
-                    
-                    // Adjust photo styling
-                    const img = photoContainer.querySelector('img');
-                    img.style.border = 'none';
-                    img.style.borderRadius = '0';
-                }
-            },
-            santai: {
-                imgSrc: "santai.png",
-                apply: function(photoContainer) {
-                    // Same structure as manga template
-                    const existingOverlay = photoContainer.querySelector('.template-overlay');
-                    if (existingOverlay) {
-                        photoContainer.removeChild(existingOverlay);
-                    }
-                    
-                    const overlay = document.createElement('div');
-                    overlay.className = 'template-overlay';
-                    overlay.style.backgroundImage = `url(${this.imgSrc})`;
-                    photoContainer.appendChild(overlay);
-                    
-                    const img = photoContainer.querySelector('img');
-                    img.style.border = 'none';
-                    img.style.borderRadius = '0';
-                }
-            },
-            meme: {
-                imgSrc: "meme.jpg",
-                apply: function(photoContainer) {
-                    // Same structure as manga template
-                    const existingOverlay = photoContainer.querySelector('.template-overlay');
-                    if (existingOverlay) {
-                        photoContainer.removeChild(existingOverlay);
-                    }
-                    
-                    const overlay = document.createElement('div');
-                    overlay.className = 'template-overlay';
-                    overlay.style.backgroundImage = `url(${this.imgSrc})`;
-                    photoContainer.appendChild(overlay);
-                    
-                    const img = photoContainer.querySelector('img');
-                    img.style.border = 'none';
-                    img.style.borderRadius = '0';
-                }
-            },
-            astronot: {
-                imgSrc: "astronot.jpg",
-                apply: function(photoContainer) {
-                    // Same structure as manga template
-                    const existingOverlay = photoContainer.querySelector('.template-overlay');
-                    if (existingOverlay) {
-                        photoContainer.removeChild(existingOverlay);
-                    }
-                    
-                    const overlay = document.createElement('div');
-                    overlay.className = 'template-overlay';
-                    overlay.style.backgroundImage = `url(${this.imgSrc})`;
-                    photoContainer.appendChild(overlay);
-                    
-                    const img = photoContainer.querySelector('img');
-                    img.style.border = 'none';
-                    img.style.borderRadius = '0';
-                }
-            }
-        };
-
-        // Initialize template buttons
-        function initTemplateButtons() {
-            document.querySelectorAll('.template-option').forEach(option => {
-                option.addEventListener('click', function() {
-                    const templateName = this.dataset.template;
-                    document.querySelectorAll('.photo-with-sticker').forEach(container => {
-                        templates[templateName].apply(container);
-                    });
-                });
-            });
-        }
-
-        // Call this when entering edit page
-        document.getElementById('continue-btn').addEventListener('click', function() {
-            showPage('page-edit');
-            renderFinalPhotos();
-            setTimeout(initTemplateButtons, 100); // Small delay to ensure DOM is ready
+function applyTemplate(templateName) {
+    const template = templates[templateName];
+    
+    document.querySelectorAll('.photo-with-sticker').forEach(container => {
+        // Remove existing template
+        const existingFrame = container.querySelector('.template-frame');
+        if (existingFrame) container.removeChild(existingFrame);
+        
+        // Create new frame
+        const frame = document.createElement('div');
+        frame.className = 'template-frame';
+        frame.style.backgroundImage = `url(${template.imgSrc})`;
+        container.prepend(frame);
+        
+        // Adjust photo position
+        const photo = container.querySelector('img');
+        Object.assign(photo.style, {
+            position: 'absolute',
+            zIndex: '5',
+            width: template.photoPosition.width,
+            left: template.photoPosition.left,
+            top: template.photoPosition.top,
+            border: 'none'
         });
+    });
+}
+
+// Initialize template buttons
+document.querySelectorAll('.template-option').forEach(option => {
+    option.addEventListener('click', function() {
+        applyTemplate(this.dataset.template);
+    });
+});
 
      
                 
