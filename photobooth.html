@@ -299,6 +299,29 @@ padding: 15px;
         .voice-status.listening .indicator {
             background-color: #4CAF50;
         }
+        /* Template Options */
+.template-options {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.template-btn {
+    padding: 10px 15px;
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.template-btn:hover {
+    background: #ff6b6b;
+    transform: translateY(-3px);
+}
 
         @keyframes pulse {
             0% { transform: scale(1); }
@@ -1125,6 +1148,114 @@ padding: 15px;
             stopCamera();
             stopListening();
         });
+
+        // ==============================================
+// TEMPLATE PHOTOBOOTH STRIP (POP ART/COMIC STYLE)
+// ==============================================
+const templates = {
+    comic: {
+        name: "Comic Book",
+        apply: function(img) {
+            img.style.filter = "contrast(200%) brightness(110%)";
+            img.style.boxShadow = "0 0 0 5px #000";
+            // Tambahkan efek dot pattern (pakai background CSS)
+            img.parentElement.style.backgroundImage = 
+                "radial-gradient(circle, black 1px, transparent 1px)";
+            img.parentElement.style.backgroundSize = "10px 10px";
+        }
+    },
+    popart: {
+        name: "Pop Art",
+        apply: function(img) {
+            img.style.filter = "saturate(300%) contrast(150%)";
+            // Efek warna segmentasi (pakai blend mode)
+            img.style.mixBlendMode = "multiply";
+            img.parentElement.style.backgroundColor = "#FF0";
+        }
+    },
+    retro: {
+        name: "Retro Wave",
+        apply: function(img) {
+            img.style.filter = "hue-rotate(45deg) brightness(120%)";
+            img.parentElement.style.background = 
+                "linear-gradient(45deg, #FF00FF, #00FFFF)";
+        }
+    },
+    polaroid: {
+        name: "Polaroid Collage",
+        apply: function(img) {
+            img.style.border = "15px solid white";
+            img.style.boxShadow = "0 5px 15px rgba(0,0,0,0.3)";
+            img.parentElement.style.padding = "20px";
+            img.parentElement.style.backgroundColor = "#f5f5f5";
+        }
+    },
+    manga: {
+        name: "Manga Effect",
+        apply: function(img) {
+            img.style.filter = "grayscale(100%) contrast(200%)";
+            // Tambahkan speed lines (pakai pseudo-element)
+            const speedLines = document.createElement("div");
+            speedLines.style.backgroundImage = 
+                "repeating-linear-gradient(45deg, black 0%, black 5%, transparent 5%, transparent 10%)";
+            speedLines.style.position = "absolute";
+            speedLines.style.width = "100%";
+            speedLines.style.height = "100%";
+            img.parentElement.appendChild(speedLines);
+        }
+    }
+};
+
+// ==============================================
+// TAMBAHKAN TOMBOL TEMPLATE KE HALAMAN EDITING
+// ==============================================
+function initTemplates() {
+    const templateSection = document.createElement("div");
+    templateSection.className = "edit-section";
+    templateSection.innerHTML = `
+        <h3>Template Photobooth</h3>
+        <div class="template-options">
+            ${Object.keys(templates).map(key => `
+                <button class="template-btn" data-template="${key}">
+                    ${templates[key].name}
+                </button>
+            `).join("")}
+        </div>
+    `;
+
+    // Sisipkan sebelum section "Hasil Akhir"
+    document.querySelector("#page-edit .edit-section:last-child")
+        .before(templateSection);
+
+    // Event listener untuk tombol template
+    document.querySelectorAll(".template-btn").forEach(btn => {
+        btn.addEventListener("click", function() {
+            const templateName = this.dataset.template;
+            applyTemplate(templateName);
+        });
+    });
+}
+
+// Fungsi apply template ke semua foto
+function applyTemplate(templateName) {
+    const template = templates[templateName];
+    document.querySelectorAll("#final-result img").forEach(img => {
+        // Reset dulu semua efek sebelumnya
+        img.style = "";
+        img.parentElement.style = "";
+        
+        // Hapus child elements (seperti speed lines)
+        while (img.parentElement.children.length > 1) {
+            img.parentElement.removeChild(img.parentElement.lastChild);
+        }
+
+        // Apply template baru
+        template.apply(img);
+    });
+}
+
+// Panggil init saat halaman edit aktif
+document.getElementById("continue-btn").addEventListener("click", initTemplates);
     </script>
 </body>
 </html>
