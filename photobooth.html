@@ -311,6 +311,40 @@ padding: 15px;
     pointer-events: none;
 }
 
+        /* [TAMBAH INI] */
+/* Style untuk border options */
+.border-options {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+    justify-content: center;
+}
+
+.border-option {
+    padding: 10px 15px;
+    background: #f0f0f0;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 2px solid #ddd;
+}
+
+.border-option:hover {
+    background: #e0e0e0;
+}
+
+.border-option.active {
+    background: #ff6b6b;
+    color: white;
+    border-color: #ff6b6b;
+}
+
+/* Style untuk border besar */
+.large-frame {
+    border-width: 50px 50px 150px 50px !important; /* Atas 50px, Kanan 50px, Bawah 150px, Kiri 50px */
+    border-style: solid !important;
+    box-sizing: border-box;
+}
         
         @keyframes fadeInOut {
             0% { opacity: 0; }
@@ -493,6 +527,14 @@ padding: 15px;
     <!-- Halaman 4 - Editing -->
     <div id="page-edit" class="page">
         <h2>Edit Foto</h2>
+        <!-- [TAMBAH INI] -->
+<div class="edit-section">
+    <h3>Ukuran Bingkai</h3>
+    <div class="border-options">
+        <div class="border-option active" data-border-size="small">Kecil</div>
+        <div class="border-option" data-border-size="large">Photobooth (Besar)</div>
+    </div>
+</div>
         
         <div class="edit-section">
             <h3>Warna Bingkai</h3>
@@ -581,6 +623,8 @@ padding: 15px;
         let mediaStream = null;
         let recognition = null;
         let isListening = false;
+        // [TAMBAH INI] Variabel global
+let selectedBorderSize = "small"; // Default: border kecil
 
         // Elemen DOM
         const pages = document.querySelectorAll('.page');
