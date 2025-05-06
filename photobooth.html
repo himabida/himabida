@@ -602,6 +602,7 @@
         <span>Voice Command: OFF</span>
     </div>
 
+
     <script>
         // Variabel Global
         let currentPage = "page-start";
@@ -937,383 +938,310 @@
             }
         }
 
-        // Mulai Countdown
-        function startCountdown() {
-            let timeLeft = parseInt(timerSelect.value);
-            countdownEl.textContent = timeLeft;
-            countdownEl.style.display = 'flex';
-            
-            captureBtn.disabled = true;
-            deleteBtn.disabled = true;
-            
-            countdownInterval = setInterval(() => {
-                timeLeft--;
-                countdownEl.textContent = timeLeft;
-                
-                if (timeLeft <= 0) {
-                    clearInterval(countdownInterval);
-                    countdownEl.style.display = 'none';
-                    takePhoto();
-                    
-                    if (currentPose < totalPoses - 1) {
-                        currentPose++;
-                        setTimeout(() => {
-                            startCountdown();
-                        }, 1000);
-                    } else {
-                        captureBtn.disabled = false;
-                        deleteBtn.disabled = false;
-                        document.getElementById('photo-preview').style.display = 'block';
-                    }
-                }
-            }, 1000);
-        }
-
-        // Ambil Foto
-        function takePhoto() {
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            
-            ctx.filter = filters[currentFilter];
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            
-            video.style.filter = filters[currentFilter];
-            
-            const photoData = canvas.toDataURL('image/png');
-            photos.push(photoData);
-            
-            updatePhotoPreview();
-        }
-
-        // Update Preview Foto
-        function updatePhotoPreview() {
-            photosContainer.innerHTML = '';
-            photos.forEach((photo, index) => {
-                const img = document.createElement('img');
-                img.src = photo;
-                img.className = 'final-photo';
-                img.style.border = `3px solid ${selectedFrameColor}`;
-                photosContainer.appendChild(img);
-            });
-        }
-
-        // Render Foto untuk Editing
-        function renderFinalPhotos() {
-            finalResult.innerHTML = '';
-            
-            photos.forEach((photo, photoIndex) => {
-                const container = document.createElement('div');
-                container.className = 'photo-with-sticker';
-                container.dataset.photoIndex = photoIndex;
-                
-                const img = document.createElement('img');
-                img.src = photo;
-                img.className = 'final-photo';
-                img.style.border = `10px solid ${selectedFrameColor}`;
-                container.appendChild(img);
-                
-                if (stickerPositions[photoIndex]) {
-                    stickerPositions[photoIndex].forEach((sticker, idx) => {
-                        const stickerEl = document.createElement('div');
-                        stickerEl.className = 'sticker-preview';
-                        stickerEl.style.backgroundImage = sticker.backgroundImage;
-                        stickerEl.style.left = `${sticker.x}px`;
-                        stickerEl.style.top = `${sticker.y}px`;
-                        stickerEl.dataset.stickerIndex = idx;
-                        container.appendChild(stickerEl);
-                    });
-                }
-                
-                finalResult.appendChild(container);
-            });
-
-            document.querySelectorAll('.photo-with-sticker').forEach(container => {
-                container.addEventListener('click', (e) => {
-                    if (activeSticker && (e.target === container || e.target === container.querySelector('img'))) {
-                        const img = container.querySelector('img');
-                        const rect = img.getBoundingClientRect();
-                        
-                        const x = e.clientX - rect.left - 40;
-                        const y = e.clientY - rect.top - 40;
-                        
-                        const boundedX = Math.max(0, Math.min(x, rect.width - 80));
-                        const boundedY = Math.max(0, Math.min(y, rect.height - 80));
-                        
-                        const photoIndex = parseInt(container.dataset.photoIndex);
-                        if (!stickerPositions[photoIndex]) {
-                            stickerPositions[photoIndex] = [];
-                        }
-                        
-                        stickerPositions[photoIndex].push({
-                            backgroundImage: activeSticker.style.backgroundImage,
-                            x: boundedX,
-                            y: boundedY
-                        });
-                        
-                        renderFinalPhotos();
-                    }
-                });
-            });
-        }
-
-        // Fungsi untuk memuat gambar
-        function loadImage(src) {
-            return new Promise((resolve, reject) => {
-                const img = new Image();
-                img.crossOrigin = "Anonymous";
-                img.src = src;
-                img.onload = () => resolve(img);
-                img.onerror = (err) => reject(err);
-            });
-        }
-
-        // Event Listener untuk Download
-        downloadBtn.addEventListener('click', async function() {
-            if (photos.length === 0) {
-                alert('Tidak ada foto yang bisa didownload!');
-                return;
-            }
-            const originalText = downloadBtn.textContent;
-            downloadBtn.disabled = true;
-            downloadBtn.textContent = 'Memproses...';
-            
-            try {
-                                // Buat canvas untuk setiap foto
-                const photoCanvases = [];
-                
-                for (let i = 0; i < photos.length; i++) {
-                    const photoCanvas = document.createElement('canvas');
-                    const photoCtx = photoCanvas.getContext('2d');
-                    const img = new Image();
-                    
-                    await new Promise((resolve) => {
-                        img.onload = () => {
-                            photoCanvas.width = img.width;
-                            photoCanvas.height = img.height;
-                            
-                            photoCtx.fillStyle = selectedFrameColor;
-                            photoCtx.fillRect(0, 0, photoCanvas.width, photoCanvas.height);
-                            photoCtx.drawImage(img, 10, 10, photoCanvas.width - 20, photoCanvas.height - 20);
-                            
-                            if (stickerPositions[i]) {
-                                const stickerPromises = stickerPositions[i].map(async (sticker) => {
-                                    try {
-                                        const url = sticker.backgroundImage.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
-                                        const stickerImg = await loadImage(url);
-                                        photoCtx.drawImage(stickerImg, sticker.x, sticker.y, 80, 80);
-                                    } catch (error) {
-                                        console.error('Error loading sticker:', error);
-                                    }
-                                });
-                                
-                                Promise.all(stickerPromises).then(resolve);
-                            } else {
-                                resolve();
-                            }
-                        };
-                        
-                        img.src = photos[i];
-                    });
-                    
-                    photoCanvases.push(photoCanvas);
-                }
-                
-                // Buat canvas final
-                const finalCanvas = document.createElement('canvas');
-                const finalCtx = finalCanvas.getContext('2d');
-                
-                if (selectedLayout === 'D') {
-                    const imgWidth = photoCanvases[0].width;
-                    const imgHeight = photoCanvases[0].height;
-                    finalCanvas.width = imgWidth * 2;
-                    finalCanvas.height = imgHeight * 3;
-                    
-                    photoCanvases.forEach((canvas, index) => {
-                        const row = Math.floor(index / 2);
-                        const col = index % 2;
-                        finalCtx.drawImage(canvas, col * imgWidth, row * imgHeight);
-                    });
-                } else if (selectedLayout === 'E') {
-                    const imgWidth = photoCanvases[0].width;
-                    const imgHeight = photoCanvases[0].height;
-                    finalCanvas.width = imgWidth * 2;
-                    finalCanvas.height = imgHeight * 2;
-                    
-                    photoCanvases.forEach((canvas, index) => {
-                        const row = Math.floor(index / 2);
-                        const col = index % 2;
-                        finalCtx.drawImage(canvas, col * imgWidth, row * imgHeight);
-                    });
-                } else {
-                    const imgWidth = photoCanvases[0].width;
-                    const imgHeight = photoCanvases[0].height;
-                    finalCanvas.width = imgWidth;
-                    finalCanvas.height = imgHeight * photoCanvases.length;
-                    
-                    photoCanvases.forEach((canvas, index) => {
-                        finalCtx.drawImage(canvas, 0, index * imgHeight);
-                    });
-                }
-
-            
-
-// Add this to your JavaScript
-const templates = {
-    manga: {
-        imgSrc: "manga.png",
-        photoPosition: { width: "80%", left: "10%", top: "15%" }
-    },
-    santai: {
-        imgSrc: "santai.png", 
-        photoPosition: { width: "75%", left: "12%", top: "20%" }
-    },
-    meme: {
-        imgSrc: "meme.png",
-        photoPosition: { width: "85%", left: "7%", top: "10%" }
-    },
-    astronot: {
-        imgSrc: "astronot.png",
-        photoPosition: { width: "70%", left: "15%", top: "25%" }
-    }
-};
-
-function applyTemplate(templateName) {
-    const template = templates[templateName];
+       // Mulai Countdown
+function startCountdown() {
+    let timeLeft = parseInt(timerSelect.value);
+    countdownEl.textContent = timeLeft;
+    countdownEl.style.display = 'flex';
     
-    document.querySelectorAll('.photo-with-sticker').forEach(container => {
-        // Remove existing template
-        const existingFrame = container.querySelector('.template-frame');
-        if (existingFrame) container.removeChild(existingFrame);
+    captureBtn.disabled = true;
+    deleteBtn.disabled = true;
+    
+    countdownInterval = setInterval(() => {
+        timeLeft--;
+        countdownEl.textContent = timeLeft;
         
-        // Create new frame
+        if (timeLeft <= 0) {
+            clearInterval(countdownInterval);
+            countdownEl.style.display = 'none';
+            takePhoto();
+            
+            if (currentPose < totalPoses - 1) {
+                currentPose++;
+                setTimeout(() => {
+                    startCountdown();
+                }, 1000);
+            } else {
+                captureBtn.disabled = false;
+                deleteBtn.disabled = false;
+                document.getElementById('photo-preview').style.display = 'block';
+            }
+        }
+    }, 1000);
+}
+
+// Ambil Foto
+function takePhoto() {
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    
+    ctx.filter = filters[currentFilter];
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    
+    video.style.filter = filters[currentFilter];
+    
+    const photoData = canvas.toDataURL('image/png');
+    photos.push(photoData);
+    
+    updatePhotoPreview();
+}
+
+// Update Preview Foto
+function updatePhotoPreview() {
+    photosContainer.innerHTML = '';
+    photos.forEach((photo, index) => {
+        const img = document.createElement('img');
+        img.src = photo;
+        img.className = 'final-photo';
+        img.style.border = `3px solid ${selectedFrameColor}`;
+        photosContainer.appendChild(img);
+    });
+}
+
+// Render Foto untuk Editing
+function renderFinalPhotos() {
+    finalResult.innerHTML = '';
+    
+    photos.forEach((photo, photoIndex) => {
+        // Create frame container
         const frame = document.createElement('div');
-        frame.className = 'template-frame';
-        frame.style.backgroundImage = `url(${template.imgSrc})`;
-        container.prepend(frame);
+        frame.className = 'photo-frame';
+        frame.style.setProperty('--frame-color', selectedFrameColor);
         
-        // Adjust photo position
-        const photo = container.querySelector('img');
-        Object.assign(photo.style, {
-            position: 'absolute',
-            zIndex: '5',
-            width: template.photoPosition.width,
-            left: template.photoPosition.left,
-            top: template.photoPosition.top,
-            border: 'none'
+        // Create image element
+        const img = document.createElement('img');
+        img.src = photo;
+        img.className = 'final-photo';
+        
+        // Create footer space (3x larger than sides)
+        const footer = document.createElement('div');
+        footer.className = 'photo-footer';
+        footer.innerHTML = '<p>Photobooth Digital</p>';
+        
+        // Create sticker container
+        const stickerContainer = document.createElement('div');
+        stickerContainer.className = 'photo-with-sticker';
+        stickerContainer.dataset.photoIndex = photoIndex;
+        
+        // Assemble elements
+        frame.appendChild(img);
+        frame.appendChild(footer);
+        stickerContainer.appendChild(frame);
+        
+        // Add existing stickers if any
+        if (stickerPositions[photoIndex]) {
+            stickerPositions[photoIndex].forEach((sticker, idx) => {
+                const stickerEl = document.createElement('div');
+                stickerEl.className = 'sticker-preview';
+                stickerEl.style.backgroundImage = sticker.backgroundImage;
+                stickerEl.style.left = `${sticker.x}px`;
+                stickerEl.style.top = `${sticker.y}px`;
+                stickerEl.dataset.stickerIndex = idx;
+                stickerContainer.appendChild(stickerEl);
+            });
+        }
+        
+        finalResult.appendChild(stickerContainer);
+    });
+
+    // Add sticker placement handlers
+    document.querySelectorAll('.photo-with-sticker').forEach(container => {
+        container.addEventListener('click', (e) => {
+            if (activeSticker && (e.target === container || e.target === container.querySelector('img'))) {
+                const rect = container.getBoundingClientRect();
+                
+                const x = e.clientX - rect.left - 40;
+                const y = e.clientY - rect.top - 40;
+                
+                const photoIndex = parseInt(container.dataset.photoIndex);
+                if (!stickerPositions[photoIndex]) {
+                    stickerPositions[photoIndex] = [];
+                }
+                
+                stickerPositions[photoIndex].push({
+                    backgroundImage: activeSticker.style.backgroundImage,
+                    x: x,
+                    y: y
+                });
+                
+                renderFinalPhotos();
+            }
         });
     });
 }
 
-// Initialize template buttons
-document.querySelectorAll('.template-option').forEach(option => {
-    option.addEventListener('click', function() {
-        applyTemplate(this.dataset.template);
+// Fungsi untuk memuat gambar
+function loadImage(src) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = "Anonymous";
+        img.src = src;
+        img.onload = () => resolve(img);
+        img.onerror = (err) => reject(err);
     });
+}
+
+// Event Listener untuk Download
+downloadBtn.addEventListener('click', async function() {
+    if (photos.length === 0) {
+        alert('Tidak ada foto yang bisa didownload!');
+        return;
+    }
+    
+    const originalText = downloadBtn.textContent;
+    downloadBtn.disabled = true;
+    downloadBtn.textContent = 'Memproses...';
+    
+    try {
+        // Buat canvas untuk setiap foto dengan frame tebal
+        const photoCanvases = [];
+        const sidePadding = 40; // Padding kiri/kanan
+        const topPadding = 40;  // Padding atas
+        const bottomPadding = 120; // Padding bawah (3x side padding)
+        
+        for (let i = 0; i < photos.length; i++) {
+            const photoCanvas = document.createElement('canvas');
+            const img = new Image();
+            
+            await new Promise((resolve) => {
+                img.onload = () => {
+                    // Set canvas size with padding
+                    photoCanvas.width = img.width + sidePadding * 2;
+                    photoCanvas.height = img.height + topPadding + bottomPadding;
+                    
+                    const photoCtx = photoCanvas.getContext('2d');
+                    
+                    // Draw frame background
+                    photoCtx.fillStyle = selectedFrameColor;
+                    photoCtx.fillRect(0, 0, photoCanvas.width, photoCanvas.height);
+                    
+                    // Draw photo
+                    photoCtx.drawImage(img, sidePadding, topPadding, img.width, img.height);
+                    
+                    // Draw footer text
+                    photoCtx.fillStyle = '#ffffff';
+                    photoCtx.font = 'bold 24px Arial';
+                    photoCtx.textAlign = 'center';
+                    photoCtx.fillText('Photobooth Digital', photoCanvas.width/2, photoCanvas.height - 60);
+                    
+                    // Draw stickers if any
+                    if (stickerPositions[i]) {
+                        stickerPositions[i].forEach(async (sticker) => {
+                            try {
+                                const url = sticker.backgroundImage.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
+                                const stickerImg = await loadImage(url);
+                                photoCtx.drawImage(
+                                    stickerImg, 
+                                    sticker.x + sidePadding, 
+                                    sticker.y + topPadding, 
+                                    80, 
+                                    80
+                                );
+                            } catch (error) {
+                                console.error('Error loading sticker:', error);
+                            }
+                        });
+                    }
+                    resolve();
+                };
+                img.src = photos[i];
+            });
+            
+            photoCanvases.push(photoCanvas);
+        }
+        
+        // Buat canvas final berdasarkan layout
+        const finalCanvas = document.createElement('canvas');
+        const finalCtx = finalCanvas.getContext('2d');
+        
+        if (selectedLayout === 'D') {
+            // Layout grid 2x3
+            const imgWidth = photoCanvases[0].width;
+            const imgHeight = photoCanvases[0].height;
+            finalCanvas.width = imgWidth * 2;
+            finalCanvas.height = imgHeight * 3;
+            
+            photoCanvases.forEach((canvas, index) => {
+                const row = Math.floor(index / 2);
+                const col = index % 2;
+                finalCtx.drawImage(canvas, col * imgWidth, row * imgHeight);
+            });
+        } else if (selectedLayout === 'E') {
+            // Layout grid 2x2
+            const imgWidth = photoCanvases[0].width;
+            const imgHeight = photoCanvases[0].height;
+            finalCanvas.width = imgWidth * 2;
+            finalCanvas.height = imgHeight * 2;
+            
+            photoCanvases.forEach((canvas, index) => {
+                const row = Math.floor(index / 2);
+                const col = index % 2;
+                finalCtx.drawImage(canvas, col * imgWidth, row * imgHeight);
+            });
+        } else {
+            // Layout vertikal (A,B,C,F)
+            const imgWidth = photoCanvases[0].width;
+            const imgHeight = photoCanvases[0].height;
+            finalCanvas.width = imgWidth;
+            finalCanvas.height = imgHeight * photoCanvases.length;
+            
+            photoCanvases.forEach((canvas, index) => {
+                finalCtx.drawImage(canvas, 0, index * imgHeight);
+            });
+        }
+
+        // Download image
+        finalCanvas.toBlob(blob => {
+            const link = document.createElement('a');
+            link.download = 'photobooth-result.png';
+            link.href = URL.createObjectURL(blob);
+            link.click();
+            
+            // Show notification
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+            
+            downloadBtn.disabled = false;
+            downloadBtn.textContent = originalText;
+        }, 'image/png');
+        
+    } catch (error) {
+        console.error('Error saat memproses foto:', error);
+        alert('Terjadi kesalahan saat memproses foto. Silakan coba lagi.');
+        downloadBtn.disabled = false;
+        downloadBtn.textContent = originalText;
+    }
 });
 
-     
-                
-                // Download
-                finalCanvas.toBlob(blob => {
-                    const link = document.createElement('a');
-                    link.download = 'photobooth-result.png';
-                    link.href = URL.createObjectURL(blob);
-                    link.click();
-                    
-                    notification.style.display = 'block';
-                    setTimeout(() => {
-                        notification.style.display = 'none';
-                    }, 3000);
-                    
-                    downloadBtn.disabled = false;
-                    downloadBtn.textContent = originalText;
-                }, 'image/png');
-                
-            } catch (error) {
-                console.error('Error saat memproses foto:', error);
-                alert('Terjadi kesalahan saat memproses foto. Silakan coba lagi.');
-                downloadBtn.disabled = false;
-                downloadBtn.textContent = originalText;
-            }
-        });
-
-        // Event Listeners lainnya
-        startBtn.addEventListener('click', () => showPage('page-layout'));
-
-        layoutOptions.forEach(option => {
-            option.addEventListener('click', () => {
-                selectedLayout = option.dataset.layout;
-                totalPoses = parseInt(option.dataset.poses);
-                currentPose = 0;
-                photos = [];
-                stickerPositions = {};
-                showPage('page-photo');
-            });
-        });
-
-        filterSelect.addEventListener('change', () => {
-            currentFilter = filterSelect.value;
-            video.style.filter = filters[currentFilter];
-        });
-
-        captureBtn.addEventListener('click', startCountdown);
-
-        deleteBtn.addEventListener('click', () => {
-            if (photos.length > 0) {
-                photos.pop();
-                delete stickerPositions[photos.length];
-                updatePhotoPreview();
-                currentPose--;
-                
-                if (photos.length === 0) {
-                    document.getElementById('photo-preview').style.display = 'none';
-                }
-            }
-        });
-
-        continueBtn.addEventListener('click', () => {
-            showPage('page-edit');
-            renderFinalPhotos();
-        });
-
-        frameColors.forEach(color => {
-            color.addEventListener('click', () => {
-                selectedFrameColor = color.dataset.color;
-                renderFinalPhotos();
-            });
-        });
-
-        stickers.forEach(sticker => {
-            sticker.addEventListener('click', (e) => {
-                stickers.forEach(s => s.classList.remove('sticker-active'));
-                e.target.classList.add('sticker-active');
-                activeSticker = e.target;
-            });
-        });
-
-        // Initialize voice recognition when the page loads
-        window.addEventListener('DOMContentLoaded', () => {
-            initVoiceRecognition();
-            
-            // Show a welcome message with voice commands
-            setTimeout(() => {
-                if ('speechSynthesis' in window) {
-                    const speech = new SpeechSynthesisUtterance();
-                    speech.text = "Selamat datang di Photobooth Bisnis Digital. Anda dapat menggunakan perintah suara. Katakan 'Mulai' untuk memulai.";
-                    speech.lang = 'id-ID';
-                    window.speechSynthesis.speak(speech);
-                }
-            }, 1000);
-        });
-
-        // Cleanup
-        window.addEventListener('beforeunload', () => {
-            stopCamera();
-            stopListening();
-        });
-
-             
+// Initialize voice recognition when the page loads
+window.addEventListener('DOMContentLoaded', () => {
+    initVoiceRecognition();
     
-    </script>
+    // Show a welcome message with voice commands
+    setTimeout(() => {
+        if ('speechSynthesis' in window) {
+            const speech = new SpeechSynthesisUtterance();
+            speech.text = "Selamat datang di Photobooth Bisnis Digital. Anda dapat menggunakan perintah suara. Katakan 'Mulai' untuk memulai.";
+            speech.lang = 'id-ID';
+            window.speechSynthesis.speak(speech);
+        }
+    }, 1000);
+});
+
+// Cleanup
+window.addEventListener('beforeunload', () => {
+    stopCamera();
+    stopListening();
+});
+</script> 
+            
+                    
+                    
+
+            
+
+                    
 </body>
 </html>
