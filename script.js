@@ -157,24 +157,24 @@ document.addEventListener('DOMContentLoaded', function() {
       });
   });
 
-// Smooth scroll for product links
-document.querySelectorAll('.dropdown-content a').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        const targetId = this.getAttribute('href');
-        const targetElement = document.querySelector(targetId);
-        
-        if (targetElement) {
-            window.scrollTo({
-                top: targetElement.offsetTop - 100,
-                behavior: 'smooth'
-            });
-            
-            // Close dropdown after selection
-            document.querySelector('.dropdown-content').style.display = 'none';
+// Untuk mobile - toggle dropdown saat diklik
+document.querySelectorAll('.dropbtn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        if (window.innerWidth <= 768) { // Hanya di mobile
+            e.preventDefault();
+            const dropdown = this.nextElementSibling;
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
         }
     });
+});
+
+// Tutup dropdown ketika klik di luar
+window.addEventListener('click', function(e) {
+    if (!e.target.matches('.dropbtn')) {
+        document.querySelectorAll('.dropdown-content').forEach(dropdown => {
+            dropdown.style.display = 'none';
+        });
+    }
 });
 
 let currentWordIndex = 0;
