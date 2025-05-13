@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Photobooth Bisnis Digital</title>
     <style>
         /* CSS Reset */
@@ -11,7 +11,7 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Arial', sans-serif;
             background: #f5f5f5;
@@ -19,8 +19,6 @@
             transition: all 0.3s;
         }
 
-        /* Template Section */
-        
         /* Halaman Utama */
         .page {
             display: none;
@@ -30,23 +28,23 @@
             align-items: center;
             justify-content: center;
         }
-        
+
         .page.active {
             display: flex;
         }
-        
+
         /* Halaman 1 - Mulai */
         #page-start {
-            background: linear-gradient(135deg, #001C8E, #205c8b);
+            background: linear-gradient(135deg, #001c8e, #205c8b);
             color: white;
         }
-        
+
         #page-start h1 {
             font-size: 3rem;
             margin-bottom: 30px;
             text-align: center;
         }
-        
+
         .start-btn {
             padding: 15px 30px;
             font-size: 1.2rem;
@@ -58,17 +56,17 @@
             cursor: pointer;
             transition: all 0.3s;
         }
-        
+
         .start-btn:hover {
             background: #205c8b;
             transform: scale(1.05);
         }
-        
+
         /* Halaman 2 - Pilih Layout */
         #page-layout {
             background: white;
         }
-        
+
         .layout-options {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -76,7 +74,7 @@
             margin: 30px 0;
             max-width: 800px;
         }
-        
+
         .layout-option {
             border: 3px solid #ddd;
             border-radius: 10px;
@@ -85,20 +83,12 @@
             transition: all 0.3s;
             text-align: center;
         }
-        
+
         .layout-option:hover {
             border-color: #ff6b6b;
             transform: translateY(-5px);
         }
-        
-        .layout-option img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-        
+
         /* Halaman 3 - Foto */
         .camera-container {
             position: relative;
@@ -106,24 +96,24 @@
             max-width: 600px;
             margin: 20px auto;
         }
-        
+
         #video {
             width: 100%;
             border-radius: 10px;
             border: 3px solid #ff6b6b;
         }
-        
+
         #canvas {
             display: none;
             width: 100%;
             border-radius: 10px;
         }
-        
+
         .countdown {
             position: absolute;
             top: 20px;
             left: 20px;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0, 0, 0, 0.7);
             color: white;
             width: 60px;
             height: 60px;
@@ -135,7 +125,7 @@
             font-weight: bold;
             z-index: 10;
         }
-        
+
         .controls {
             display: flex;
             gap: 10px;
@@ -143,7 +133,7 @@
             flex-wrap: wrap;
             justify-content: center;
         }
-        
+
         .control-btn {
             padding: 10px 20px;
             background: #ff6b6b;
@@ -153,39 +143,40 @@
             cursor: pointer;
             transition: all 0.3s;
         }
-        
+
         .control-btn:hover {
             background: #ff5252;
         }
-        
+
         .control-btn:disabled {
             background: #ccc;
             cursor: not-allowed;
         }
-        
+
         /* Halaman 4 - Editing */
         .edit-section {
             background: white;
-padding: 15px;
+            padding: 15px;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
             width: 100%;
             max-width: 800px;
         }
-        
+
         .edit-section h3 {
             margin-bottom: 15px;
             color: #ff6b6b;
         }
-        
-        .frame-colors, .stickers {
+
+        .frame-colors,
+        .stickers {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
             justify-content: center;
         }
-        
+
         .frame-color {
             width: 50px;
             height: 50px;
@@ -194,12 +185,12 @@ padding: 15px;
             transition: all 0.3s;
             border: 2px solid transparent;
         }
-        
+
         .frame-color:hover {
             transform: scale(1.1);
             border-color: #ff6b6b;
         }
-        
+
         .sticker {
             width: 60px;
             height: 60px;
@@ -212,19 +203,19 @@ padding: 15px;
             background-position: center;
             margin: 5px;
         }
-        
+
         .sticker:hover {
             transform: scale(1.1);
             border-color: #ff6b6b;
         }
-        
+
         .photo-with-sticker {
             position: relative;
             display: inline-block;
             margin: 10px;
             cursor: pointer;
         }
-        
+
         .sticker-preview {
             position: absolute;
             width: 80px;
@@ -232,31 +223,56 @@ padding: 15px;
             background-size: contain;
             background-repeat: no-repeat;
             pointer-events: none;
-            z-index: 100; /* Pastikan di atas foto */
-        }
-        
-        .final-photo {
-        
-            border: 20px solid #ddd;
-            border-bottom-width: 50px !important;
-            box-sizing: border-box;
-        }
-        
-        .notification {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.8);
-            color: white;
-            padding: 15px 25px;
-            border-radius: 5px;
             z-index: 100;
-            display: none;
-            animation: fadeInOut 3s;
         }
 
-        /* NEW STYLES FOR TEMPLATES */
+        .final-photo {
+            border: 10px solid #ddd;
+            border-bottom-width: 40px;
+            box-sizing: border-box;
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .large-frame {
+            border-width: 30px !important;
+            border-bottom-width: 80px !important;
+        }
+
+        /* Template Text Styles */
+        .template-text {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            z-index: 20;
+        }
+        
+        .large-frame .template-text {
+            bottom: 30px;
+            font-size: 32px;
+        }
+
+        /* Border Icon Styles */
+        .border-icon {
+            position: absolute;
+            pointer-events: none;
+            z-index: 15;
+            font-size: 20px;
+            animation: float 3s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
         .template-options {
             display: flex;
             gap: 15px;
@@ -266,140 +282,47 @@ padding: 15px;
         }
 
         .template-option {
-            width: 100px;
+            width: 80px;
             cursor: pointer;
             text-align: center;
             transition: all 0.3s;
+            padding: 10px;
+            border-radius: 5px;
+            border: 2px solid #ddd;
         }
 
         .template-option:hover {
             transform: scale(1.05);
+            border-color: #ff6b6b;
         }
-        .template-option img {
-            width: 100%;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 5px;
-            border: 2px solid #ddd;
+
+        .template-option.active {
+            border-color: #ff6b6b;
+            background-color: #fff0f0;
+        }
+
+        .template-option i {
+            font-size: 24px;
+            margin-bottom: 5px;
         }
 
         .template-option p {
             margin-top: 5px;
             font-size: 12px;
         }
-        .template-overlay {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: 10;
-            pointer-events: none;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-        }
-        .template-frame {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    z-index: 10;
-    pointer-events: none;
-}
 
-        /* [TAMBAH INI] */
-/* Style untuk border options */
-.border-options {
-    display: flex;
-    gap: 10px;
-    margin: 15px 0;
-    justify-content: center;
-  
-}
-
-.border-option {
-    padding: 10px 15px;
-    background: #f0f0f0;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.3s;
-    border: 2px solid #ddd;
-}
-
-.border-option:hover {
-    background: #e0e0e0;
-}
-
-.border-option.active {
-    background: #ff6b6b;
-    color: white;
-    border-color: #ff6b6b;
-}
-
-/* Style untuk border besar */
-.large-frame {
-    border-width: 50px 50px 150px 50px !important; /* Atas 50px, Kanan 50px, Bawah 150px, Kiri 50px */
-    border-style: solid !important;
-    box-sizing: border-box;
-}
-
-/* [TAMBAH INI DI <style>] */
-    .theme-border {
-    position: relative;
-    overflow: hidden;
-    border: none !important; /* Nonaktifkan border polos */
-}
-
-/* Theme: Pantai */
-.border-pantai::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('love.jpg') no-repeat;
-    background-size: 100% 100%;
-    pointer-events: none;
-    z-index: 10;
-}
-
-/* Theme: Astronot */
-.border-astronot::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('astronot.jpg') no-repeat;
-    background-size: 100% 100%;
-    pointer-events: none;
-    z-index: 10;
-}
-        
-        @keyframes fadeInOut {
-            0% { opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { opacity: 0; }
-        }
-        
-        #photos-container, #final-result {
-            display: grid;
-            gap: 10px;
-            margin: 20px 0;
-        }
-        
-        .sticker-active {
-            border: 3px solid #ff6b6b !important;
-            transform: scale(1.1);
-            box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 5px;
+            z-index: 100;
+            display: none;
+            animation: fadeInOut 3s;
         }
 
         /* Voice Recognition Status */
@@ -407,7 +330,7 @@ padding: 15px;
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0, 0, 0, 0.7);
             color: white;
             padding: 10px 15px;
             border-radius: 20px;
@@ -427,105 +350,196 @@ padding: 15px;
         }
 
         .voice-status.listening .indicator {
-            background-color: #4CAF50;
+            background-color: #4caf50;
         }
-
 
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        #photos-container,
+        #final-result {
+            display: grid;
+            gap: 10px;
+            margin: 20px 0;
+            justify-items: center;
+        }
+
+        .sticker-active {
+            border: 3px solid #ff6b6b !important;
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+        }
+
+        /* Border options */
+        .border-options {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            justify-content: center;
+        }
+
+        .border-option {
+            padding: 10px 15px;
+            background: #f0f0f0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid #ddd;
+        }
+
+        .border-option:hover {
+            background: #e0e0e0;
+        }
+
+        .border-option.active {
+            background: #ff6b6b;
+            color: white;
+            border-color: #ff6b6b;
         }
     </style>
+    <!-- Font Awesome untuk icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <script src="https://esm.sh/html2canvas@1.4.1"></script>
 </head>
 <body>
     <!-- Halaman 1 - Mulai -->
     <div id="page-start" class="page active">
         <h1>Photobooth <span> Bisnis Digital </span> </h1>
-        <img src=" hima2.png"   style="height: 150px; width: 150px; 
-         margin-bottom: 15px; margin-right: 10px;" class="hima" >
+        <img
+            src="hima2.png"
+            style="height: 150px; width: 150px; margin-bottom: 15px; margin-right: 10px"
+            class="hima"
+            alt="Logo Hima"
+        />
         <button class="start-btn" id="start-btn">Mulai Photobooth</button>
     </div>
-    
+
     <!-- Halaman 2 - Pilih Layout -->
     <div id="page-layout" class="page">
         <h2>Pilih Layout Foto</h2>
         <p>Pilih layout untuk sesi fotomu</p>
-        
+
         <div class="layout-options">
             <div class="layout-option" data-layout="A" data-poses="4">
-                <div class="layout-preview" style="background: #eee; height: 150px; display: grid; grid-template-rows: repeat(4, 1fr); gap: 5px;">
-                    <div style="background: #ff6b6b;"></div>
-                    <div style="background: #667eea;"></div>
-                    <div style="background: #4CAF50;"></div>
-                    <div style="background: #FFC107;"></div>
+                <div
+                    class="layout-preview"
+                    style="background: #eee; height: 150px; display: grid; grid-template-rows: repeat(4, 1fr); gap: 5px"
+                >
+                    <div style="background: #ff6b6b"></div>
+                    <div style="background: #667eea"></div>
+                    <div style="background: #4caf50"></div>
+                    <div style="background: #ffc107"></div>
                 </div>
                 <h3>Layout A</h3>
                 <p>4 Foto (Vertikal)</p>
             </div>
-            
+
             <div class="layout-option" data-layout="B" data-poses="3">
-<div class="layout-preview" style="background: #eee; height: 150px; display: grid; grid-template-rows: repeat(3, 1fr); gap: 5px;">
-                    <div style="background: #ff6b6b;"></div>
-                    <div style="background: #667eea;"></div>
-                    <div style="background: #4CAF50;"></div>
+                <div
+                    class="layout-preview"
+                    style="background: #eee; height: 150px; display: grid; grid-template-rows: repeat(3, 1fr); gap: 5px"
+                >
+                    <div style="background: #ff6b6b"></div>
+                    <div style="background: #667eea"></div>
+                    <div style="background: #4caf50"></div>
                 </div>
                 <h3>Layout B</h3>
                 <p>3 Foto (Vertikal)</p>
             </div>
-            
+
             <div class="layout-option" data-layout="C" data-poses="2">
-                <div class="layout-preview" style="background: #eee; height: 150px; display: grid; grid-template-rows: repeat(2, 1fr); gap: 5px;">
-                    <div style="background: #ff6b6b;"></div>
-                    <div style="background: #667eea;"></div>
+                <div
+                    class="layout-preview"
+                    style="background: #eee; height: 150px; display: grid; grid-template-rows: repeat(2, 1fr); gap: 5px"
+                >
+                    <div style="background: #ff6b6b"></div>
+                    <div style="background: #667eea"></div>
                 </div>
                 <h3>Layout C</h3>
                 <p>2 Foto (Vertikal)</p>
             </div>
-            
+
             <div class="layout-option" data-layout="D" data-poses="6">
-                <div class="layout-preview" style="background: #eee; height: 150px; display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, 1fr); gap: 5px;">
-                    <div style="background: #ff6b6b;"></div>
-                    <div style="background: #667eea;"></div>
-                    <div style="background: #4CAF50;"></div>
-                    <div style="background: #FFC107;"></div>
-                    <div style="background: #9C27B0;"></div>
-                    <div style="background: #607D8B;"></div>
+                <div
+                    class="layout-preview"
+                    style="background: #eee; height: 150px; display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, 1fr); gap: 5px"
+                >
+                    <div style="background: #ff6b6b"></div>
+                    <div style="background: #667eea"></div>
+                    <div style="background: #4caf50"></div>
+                    <div style="background: #ffc107"></div>
+                    <div style="background: #9c27b0"></div>
+                    <div style="background: #607d8b"></div>
                 </div>
                 <h3>Layout D</h3>
                 <p>6 Foto (2x3)</p>
             </div>
-            
+
             <div class="layout-option" data-layout="E" data-poses="4">
-                <div class="layout-preview" style="background: #eee; height: 150px; display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr); gap: 5px;">
-                    <div style="background: #ff6b6b;"></div>
-                    <div style="background: #667eea;"></div>
-                    <div style="background: #4CAF50;"></div>
-                    <div style="background: #FFC107;"></div>
+                <div
+                    class="layout-preview"
+                    style="background: #eee; height: 150px; display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr); gap: 5px"
+                >
+                    <div style="background: #ff6b6b"></div>
+                    <div style="background: #667eea"></div>
+                    <div style="background: #4caf50"></div>
+                    <div style="background: #ffc107"></div>
                 </div>
                 <h3>Layout E</h3>
-                <p>4 Foto ( 2x2)</p>
+                <p>4 Foto (2x2)</p>
             </div>
             <div class="layout-option" data-layout="F" data-poses="1">
-    <div class="layout-preview" style="background: #eee; height: 150px; display: grid; grid-template-rows: repeat(1, 1fr); gap: 5px;">
-        <div style="background: #ff6b6b;"></div>
-    </div>
-    <h3>Layout F</h3>
-    <p>1 Foto (Vertikal)</p>
+                <div
+                    class="layout-preview"
+                    style="background: #eee; height: 150px; display: grid; grid-template-rows: repeat(1, 1fr); gap: 5px"
+                >
+                    <div style="background: #ff6b6b"></div>
+                </div>
+                <h3>Layout F</h3>
+                <p>1 Foto (Vertikal)</p>
             </div>
         </div>
     </div>
-    
+
     <!-- Halaman 3 - Foto -->
     <div id="page-photo" class="page">
         <h2>Ambil Foto</h2>
-        
+
         <div class="camera-container">
-            <div class="countdown" id="countdown" style="display: none;">3</div>
+            <div class="countdown" id="countdown" style="display: none">3</div>
             <video id="video" autoplay></video>
             <canvas id="canvas"></canvas>
         </div>
-        
+
         <div class="controls">
             <select id="filter">
                 <option value="none">Tanpa Filter</option>
@@ -544,53 +558,52 @@ padding: 15px;
                 <option value="shadow">Bayangan</option>
                 <option value="focus">Soft Focus</option>
             </select>
-            
+
             <select id="timer">
                 <option value="3">Countdown: 3 detik</option>
                 <option value="5">Countdown: 5 detik</option>
                 <option value="10">Countdown: 10 detik</option>
             </select>
-            
+
             <button class="control-btn" id="capture-btn">Ambil Foto</button>
             <button class="control-btn" id="delete-btn">Hapus Terakhir</button>
         </div>
-<div id="photo-preview" style="display: none;">
+        <div id="photo-preview" style="display: none">
             <h3>Pratinjau Foto</h3>
             <div id="photos-container" class="final-photos"></div>
             <button class="control-btn" id="continue-btn">Lanjut ke Editing</button>
         </div>
     </div>
-    
+
     <!-- Halaman 4 - Editing -->
     <div id="page-edit" class="page">
         <h2>Edit Foto</h2>
-        <!-- [TAMBAH INI] -->
-<div class="edit-section">
-    <h3>Ukuran Bingkai</h3>
-    <div class="border-options">
-        <div class="border-option active" data-border-size="small">Kecil</div>
-        <div class="border-option" data-border-size="large">Photobooth (Besar)</div>
-    </div>
-</div>
-        
+        <div class="edit-section">
+            <h3>Ukuran Bingkai</h3>
+            <div class="border-options">
+                <div class="border-option active" data-border-size="small">Kecil</div>
+                <div class="border-option" data-border-size="large">Photobooth (Besar)</div>
+            </div>
+        </div>
+
         <div class="edit-section">
             <h3>Warna Bingkai</h3>
             <div class="frame-colors">
-                <div class="frame-color" style="background-color: #ff6b6b;" data-color="#ff6b6b"></div>
-                <div class="frame-color" style="background-color: #667eea;" data-color="#667eea"></div>
-                <div class="frame-color" style="background-color: #4CAF50;" data-color="#4CAF50"></div>
-                <div class="frame-color" style="background-color: #FFC107;" data-color="#FFC107"></div>
-                <div class="frame-color" style="background-color: #9C27B0;" data-color="#9C27B0"></div>
-                <div class="frame-color" style="background-color: #607D8B;" data-color="#607D8B"></div>
-                <div class="frame-color" style="background-color: #E91E63;" data-color="#E91E63"></div>
-                <div class="frame-color" style="background-color: #3F51B5;" data-color="#3F51B5"></div>
-                <div class="frame-color" style="background-color: #00BCD4;" data-color="#00BCD4"></div>
-                <div class="frame-color" style="background-color: #8BC34A;" data-color="#8BC34A"></div>
-                <div class="frame-color" style="background-color: #ffffff;" data-color="#ffffff"></div>
-                <div class="frame-color" style="background-color: #000000;" data-color="#000000"></div>
+                <div class="frame-color" style="background-color: #ff6b6b" data-color="#ff6b6b"></div>
+                <div class="frame-color" style="background-color: #667eea" data-color="#667eea"></div>
+                <div class="frame-color" style="background-color: #4caf50" data-color="#4caf50"></div>
+                <div class="frame-color" style="background-color: #ffc107" data-color="#ffc107"></div>
+                <div class="frame-color" style="background-color: #9c27b0" data-color="#9c27b0"></div>
+                <div class="frame-color" style="background-color: #607d8b" data-color="#607d8b"></div>
+                <div class="frame-color" style="background-color: #e91e63" data-color="#e91e63"></div>
+                <div class="frame-color" style="background-color: #3f51b5" data-color="#3f51b5"></div>
+                <div class="frame-color" style="background-color: #00bcd4" data-color="#00bcd4"></div>
+                <div class="frame-color" style="background-color: #8bc34a" data-color="#8bc34a"></div>
+                <div class="frame-color" style="background-color: #ffffff" data-color="#ffffff"></div>
+                <div class="frame-color" style="background-color: #000000" data-color="#000000"></div>
             </div>
         </div>
-        
+
         <div class="edit-section">
             <h3>Stiker</h3>
             <div class="stickers">
@@ -607,7 +620,36 @@ padding: 15px;
             </div>
         </div>
 
-                    
+        <div class="edit-section">
+            <h3>Template Border</h3>
+            <div class="template-options">
+                <div class="template-option" data-template="hearts">
+                    <i class="fas fa-heart icon-heart"></i>
+                    <p>Hearts</p>
+                </div>
+                <div class="template-option" data-template="stars">
+                    <i class="fas fa-star icon-star"></i>
+                    <p>Stars</p>
+                </div>
+                <div class="template-option" data-template="flowers">
+                    <i class="fas fa-leaf icon-flower"></i>
+                    <p>Flowers</p>
+                </div>
+                <div class="template-option" data-template="music">
+                    <i class="fas fa-music icon-music"></i>
+                    <p>Music</p>
+                </div>
+                <div class="template-option" data-template="balloons">
+                    <i class="fas fa-birthday-cake icon-balloon"></i>
+                    <p>Balloons</p>
+                </div>
+                <div class="template-option" data-template="crowns">
+                    <i class="fas fa-crown icon-crown"></i>
+                    <p>Crowns</p>
+                </div>
+            </div>
+        </div>
+
         <div class="edit-section">
             <h3>Hasil Akhir</h3>
             <div id="final-result" class="final-photos"></div>
@@ -626,6 +668,29 @@ padding: 15px;
     </div>
 
     <script>
+        // DOM Elements
+        const startBtn = document.getElementById("start-btn");
+        const pages = document.querySelectorAll(".page");
+        const layoutOptions = document.querySelectorAll(".layout-option");
+        const video = document.getElementById("video");
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+        const countdownEl = document.getElementById("countdown");
+        const filterSelect = document.getElementById("filter");
+        const timerSelect = document.getElementById("timer");
+        const captureBtn = document.getElementById("capture-btn");
+        const deleteBtn = document.getElementById("delete-btn");
+        const continueBtn = document.getElementById("continue-btn");
+        const photosContainer = document.getElementById("photos-container");
+        const frameColors = document.querySelectorAll(".frame-color");
+        const stickers = document.querySelectorAll(".sticker");
+        const borderOptions = document.querySelectorAll(".border-option");
+        const templateOptions = document.querySelectorAll(".template-option");
+        const finalResult = document.getElementById("final-result");
+        const downloadBtn = document.getElementById("download-btn");
+        const notification = document.getElementById("download-notification");
+        const voiceStatus = document.getElementById("voice-status");
+
         // Variabel Global
         let currentPage = "page-start";
         let selectedLayout = null;
@@ -640,737 +705,1336 @@ padding: 15px;
         let mediaStream = null;
         let recognition = null;
         let isListening = false;
-        // [TAMBAH INI] Variabel global
-let selectedBorderSize = "small"; // Default: border kecil
-
-        // Elemen DOM
-        const pages = document.querySelectorAll('.page');
-        const startBtn = document.getElementById('start-btn');
-        const layoutOptions = document.querySelectorAll('.layout-option');
-        const video = document.getElementById('video');
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        const countdownEl = document.getElementById('countdown');
-        const filterSelect = document.getElementById('filter');
-        const timerSelect = document.getElementById('timer');
-        const captureBtn = document.getElementById('capture-btn');
-        const deleteBtn = document.getElementById('delete-btn');
-        const continueBtn = document.getElementById('continue-btn');
-        const photosContainer = document.getElementById('photos-container');
-        const finalResult = document.getElementById('final-result');
-        const downloadBtn = document.getElementById('download-btn');
-        const frameColors = document.querySelectorAll('.frame-color');
-        const stickers = document.querySelectorAll('.sticker');
-        const notification = document.getElementById('download-notification');
-        const voiceStatus = document.getElementById('voice-status');
+        let selectedBorderSize = "small";
+        let currentTemplate = null;
 
         // Filter Effects
         const filters = {
-            none: 'none',
-            grayscale: 'grayscale(100%)',
-            sepia: 'sepia(100%)',
-            invert: 'invert(100%)',
-            vintage: 'sepia(70%) brightness(80%) contrast(120%)',
-            cool: 'brightness(90%) contrast(110%) hue-rotate(180deg)',
-            warm: 'brightness(110%) contrast(110%) hue-rotate(-20deg)',
-            blackwhite: 'grayscale(100%) contrast(120%)',
-            blur: 'blur(2px)',
-            'hue-rotate': 'hue-rotate(90deg)',
-            contrast: 'contrast(200%)',
-            saturate: 'saturate(200%)',
-            neon: 'brightness(120%) contrast(120%) hue-rotate(45deg)',
-            shadow: 'brightness(90%) contrast(120%) drop-shadow(5px 5px 5px #333)',
-            focus: 'blur(1px) brightness(110%)'
+            none: "none",
+            grayscale: "grayscale(100%)",
+            sepia: "sepia(100%)",
+            invert: "invert(100%)",
+            vintage: "sepia(70%) brightness(80%) contrast(120%)",
+            cool: "brightness(90%) contrast(110%) hue-rotate(180deg)",
+            warm: "brightness(110%) contrast(110%) hue-rotate(-20deg)",
+            blackwhite: "grayscale(100%) contrast(120%)",
+            blur: "blur(2px)",
+            "hue-rotate": "hue-rotate(90deg)",
+            contrast: "contrast(200%)",
+            saturate: "saturate(200%)",
+            neon: "brightness(120%) contrast(120%) hue-rotate(45deg)",
+            shadow: "brightness(90%) contrast(120%) drop-shadow(5px 5px 5px #333)",
+            focus: "blur(1px) brightness(110%)",
         };
 
         // Color names for voice commands
         const colorNames = {
-            '#000000':'hitam',
-            '#FFFFFF' : 'putih',
-            '#ff6b6b': 'merah muda',
-            '#667eea': 'biru',
-            '#4CAF50': 'hijau',
-            '#FFC107': 'kuning',
-            '#9C27B0': 'ungu',
-            '#607D8B': 'abu-abu',
-            '#E91E63': 'merah',
-            '#3F51B5': 'biru tua',
-            '#00BCD4': 'biru muda',
-            '#8BC34A': 'hijau muda'
+            "#000000": "hitam",
+            "#FFFFFF": "putih",
+            "#ff6b6b": "merah muda",
+            "#667eea": "biru",
+            "#4caf50": "hijau",
+            "#ffc107": "kuning",
+            "#9c27b0": "ungu",
+            "#607d8b": "abu-abu",
+            "#e91e63": "merah",
+            "#3f51b5": "biru tua",
+            "#00bcd4": "biru muda",
+            "#8bc34a": "hijau muda",
         };
 
         // Sticker names for voice commands
         const stickerNames = {
-            'heart': 'hati',
-            'star': 'bintang',
-            'smile': 'senyum',
-            'crown': 'mahkota',
-            'music': 'musik',
-            'camera': 'kamera',
-            'flower': 'bunga',
-            'balloon': 'balon',
-            'gift': 'hadiah',
-            'fire': 'api'
+            heart: "hati",
+            star: "bintang",
+            smile: "senyum",
+            crown: "mahkota",
+            music: "musik",
+            camera: "kamera",
+            flower: "bunga",
+            balloon: "balon",
+            gift: "hadiah",
+            fire: "api",
         };
 
-        // Initialize voice recognition
-        function initVoiceRecognition() {
-            try {
-                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-                recognition = new SpeechRecognition();
-                recognition.continuous = true;
-                recognition.interimResults = false;
-                recognition.lang = 'id-ID';
-
-                recognition.onstart = function() {
-                    isListening = true;
-                    voiceStatus.classList.add('listening');
-                    voiceStatus.querySelector('span').textContent = 'Voice Command: ON';
-                };
-
-                recognition.onend = function() {
-                    isListening = false;
-                    voiceStatus.classList.remove('listening');
-                    voiceStatus.querySelector('span').textContent = 'Voice Command: OFF';
-                    if (currentPage !== 'page-start') {
-                        // Restart recognition unless we're on the start page
-                        setTimeout(startListening, 500);
-                    }
-                };
-
-                recognition.onerror = function(event) {
-                    console.error('Voice recognition error', event.error);
-                    if (event.error === 'not-allowed') {
-                        voiceStatus.querySelector('span').textContent = 'Voice Command: Blocked';
-                    }
-                };
-
-                recognition.onresult = function(event) {
-                    const last = event.results.length - 1;
-                    const command = event.results[last][0].transcript.toLowerCase().trim();
-                    console.log('Voice command:', command);
+        // Template configurations
+        const templates = {
+            null: {
+                apply: function(container) {
+                    // Hanya hapus icon dan text yang ada
+                    const icons = container.querySelectorAll(".border-icon");
+                    icons.forEach(icon => icon.remove());
                     
-                    handleVoiceCommand(command);
-                };
-
-                // Ask for permission when starting the app
-                startListening();
-            } catch (e) {
-                console.error('Voice recognition not supported', e);
-                voiceStatus.style.display = 'none';
-            }
-        }
-
-        // Start listening for voice commands
-        function startListening() {
-            if (recognition && !isListening) {
-                try {
-                    recognition.start();
-                } catch (e) {
-                    console.error('Error starting recognition:', e);
-                }
-            }
-        }
-
-        // Stop listening for voice commands
-        function stopListening() {
-            if (recognition && isListening) {
-                recognition.stop();
-            }
-        }
-
-        // Handle voice commands based on current page
-        function handleVoiceCommand(command) {
-            switch (currentPage) {
-                case 'page-start':
-                    if (command.includes('mulai')) {
-                        startBtn.click();
-                    }
-                    break;
+                    const texts = container.querySelectorAll(".template-text");
+                    texts.forEach(text => text.remove());
                     
-                case 'page-layout':
-                    if (command.includes('empat foto vertikal')) {
-                        document.querySelector('.layout-option[data-layout="A"]').click();
-                    } else if (command.includes('tiga foto vertikal')) {
-                        document.querySelector('.layout-option[data-layout="B"]').click();
-                    } else if (command.includes('dua foto vertikal')) {
-                        document.querySelector('.layout-option[data-layout="C"]').click();
-                    } else if (command.includes('enam foto dua kali tiga')) {
-                        document.querySelector('.layout-option[data-layout="D"]').click();
-                    } else if (command.includes('empat foto 2 kali 2')) {
-                        document.querySelector('.layout-option[data-layout="E"]').click();
-                    } else if (command.includes('satu foto vertikal')) {
-        document.querySelector('.layout-option[data-layout="F"]').click();
-    }
-
-                    break;
+                    const img = container.querySelector("img");
+                    img.style.border = "10px solid " + selectedFrameColor;
+                    img.style.borderBottomWidth = "40px";
                     
-                case 'page-photo':
-                    if (command.includes('filter')) {
-                        // Open filter dropdown
-                        filterSelect.focus();
-                        
-                        // Handle specific filter commands
-                        if (command.includes('grayscale') || command.includes('abu-abu')) {
-                            filterSelect.value = 'grayscale';
-                            filterSelect.dispatchEvent(new Event('change'));
-                        } else if (command.includes('sepia')) {
-                            filterSelect.value = 'sepia';
-                            filterSelect.dispatchEvent(new Event('change'));
-                        } else if (command.includes('invert')) {
-                            filterSelect.value = 'invert';
-                            filterSelect.dispatchEvent(new Event('change'));
-                        } else if (command.includes('vintage')) {
-                            filterSelect.value = 'vintage';
-                            filterSelect.dispatchEvent(new Event('change'));
-                        } else if (command.includes('cool')) {
-                            filterSelect.value = 'cool';
-                            filterSelect.dispatchEvent(new Event('change'));
-                        } else if (command.includes('warm')) {
-                            filterSelect.value = 'warm';
-                            filterSelect.dispatchEvent(new Event('change'));
-                        } else if (command.includes('hitam putih') || command.includes('blackwhite')) {
-                            filterSelect.value = 'blackwhite';
-                            filterSelect.dispatchEvent(new Event('change'));
-                        } else if (command.includes('blur')) {
-                            filterSelect.value = 'blur';
-                            filterSelect.dispatchEvent(new Event('change'));
-                        } else if (command.includes('pelangi') || command.includes('hue rotate')) {
-                            filterSelect.value = 'hue-rotate';
-                            filterSelect.dispatchEvent(new Event('change'));
-                        } else if (command.includes('kontras') || command.includes('contrast')) {
-                            filterSelect.value = 'contrast';
-                            filterSelect.dispatchEvent(new Event('change'));
-                        } else if (command.includes('saturasi') || command.includes('saturate')) {
-                            filterSelect.value = 'saturate';
-                            filterSelect.dispatchEvent(new Event('change'));
-                        } else if (command.includes('neon')) {
-                            filterSelect.value = 'neon';
-                            filterSelect.dispatchEvent(new Event('change'));
-                        } else if (command.includes('bayangan') || command.includes('shadow')) {
-                            filterSelect.value = 'shadow';
-                            filterSelect.dispatchEvent(new Event('change'));
-                        } else if (command.includes('focus') || command.includes('soft focus')) {
-                            filterSelect.value = 'focus';
-                            filterSelect.dispatchEvent(new Event('change'));
-                        } else if (command.includes('none') || command.includes('tanpa filter')) {
-                            filterSelect.value = 'none';
-                            filterSelect.dispatchEvent(new Event('change'));
-                        }
-                    } else if (command.includes('hitung mundur') || command.includes('countdown')) {
-                        // Open timer dropdown
-                        timerSelect.focus();
-                        
-                        // Handle timer duration
-                        if (command.includes('3') || command.includes('3 detik') || command.includes('3s')) {
-                            timerSelect.value = '3';
-                        } else if (command.includes('5') || command.includes('5 detik') || command.includes('5s')) {
-                            timerSelect.value = '5';
-                        } else if (command.includes('10') || command.includes('10 detik') || command.includes('10s')) {
-                            timerSelect.value = '10';
-                        }
-                    } else if (command.includes('cek rek') || command.includes('ambil foto') || command.includes('capture')) {
-                        captureBtn.click();
-                    } else if (command.includes('hapus') || command.includes('delete')) {
-                        deleteBtn.click();
-                    } else if (command.includes('lanjut') || command.includes('continue')) {
-                        if (continueBtn.style.display !== 'none') {
-                            continueBtn.click();
-                        }
-                    }
-                    break;
-                    
-                case 'page-edit':
-                    if (command.includes('warna')) {
-                        // Handle frame color selection
-                        for (const [colorCode, colorName] of Object.entries(colorNames)) {
-                            if (command.includes(colorName)) {
-                                const colorElement = document.querySelector(`.frame-color[data-color="${colorCode}"]`);
-                                if (colorElement) {
-                                    colorElement.click();
-                                }
-                                break;
-                            }
-                        }
-                    } else if (command.includes('stiker') || command.includes('sticker') || command.includes('emoji')) {
-                        // Handle sticker selection
-                        for (const [stickerId, stickerName] of Object.entries(stickerNames)) {
-                            if (command.includes(stickerName)) {
-                                const stickerElement = document.querySelector(`.sticker[data-sticker="${stickerId}"]`);
-                                if (stickerElement) {
-                                    stickerElement.click();
-                                }
-                                break;
-                            }
-                        }
-                    } else if (command.includes('download') || command.includes('unduh')) {
-                        downloadBtn.click();
-                    }
-                    break;
-            }
-        }
-
-        // Fungsi Navigasi Halaman
-        function showPage(pageId) {
-            if (currentPage === 'page-photo' && pageId !== 'page-photo') {
-                stopCamera();
-            }
-
-            pages.forEach(page => {
-                page.classList.remove('active');
-            });
-            document.getElementById(pageId).classList.add('active');
-            currentPage = pageId;
-            
-            if (pageId === 'page-photo') {
-                initCamera();
-                // Restart voice recognition if it stopped
-                if (!isListening) {
-                    startListening();
-                }
-            } else if (pageId === 'page-start') {
-                // Stop voice recognition on start page to prevent accidental commands
-                stopListening();
-            } else {
-                // Ensure voice recognition is running on other pages
-                startListening();
-            }
-        }
-
-        // Inisialisasi Kamera
-        async function initCamera() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { 
-                        width: { ideal: 1280 },
-                        height: { ideal: 720 },
-                        facingMode: 'user' 
-                    } 
-                });
-                
-                mediaStream = stream;
-                video.srcObject = stream;
-                await video.play();
-            } catch (err) {
-                console.error("Error kamera:", err);
-                alert("Tidak bisa mengakses kamera. Mohon izinkan akses kamera.");
-            }
-        }
-
-        // Hentikan Kamera
-        function stopCamera() {
-            if (mediaStream) {
-                mediaStream.getTracks().forEach(track => track.stop());
-                video.srcObject = null;
-            }
-        }
-
-        // Mulai Countdown
-        function startCountdown() {
-            let timeLeft = parseInt(timerSelect.value);
-            countdownEl.textContent = timeLeft;
-            countdownEl.style.display = 'flex';
-            
-            captureBtn.disabled = true;
-            deleteBtn.disabled = true;
-            
-            countdownInterval = setInterval(() => {
-                timeLeft--;
-                countdownEl.textContent = timeLeft;
-                
-                if (timeLeft <= 0) {
-                    clearInterval(countdownInterval);
-                    countdownEl.style.display = 'none';
-                    takePhoto();
-                    
-                    if (currentPose < totalPoses - 1) {
-                        currentPose++;
-                        setTimeout(() => {
-                            startCountdown();
-                        }, 1000);
-                    } else {
-                        captureBtn.disabled = false;
-                        deleteBtn.disabled = false;
-                        document.getElementById('photo-preview').style.display = 'block';
-                    }
-                }
-            }, 1000);
-        }
-
-        // Ambil Foto
-        function takePhoto() {
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            
-            ctx.filter = filters[currentFilter];
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            
-            video.style.filter = filters[currentFilter];
-            
-            const photoData = canvas.toDataURL('image/png');
-            photos.push(photoData);
-            
-            updatePhotoPreview();
-        }
-
-        // Update Preview Foto
-        function updatePhotoPreview() {
-            photosContainer.innerHTML = '';
-            photos.forEach((photo, index) => {
-                const img = document.createElement('img');
-                img.src = photo;
-                img.className = 'final-photo';
-                // [UPDATE INI] Pakai border size yang dipilih
-        if (selectedBorderSize === "large") {
-            img.classList.add("large-frame");
-        }
-        img.style.borderColor = selectedFrameColor;
-        photosContainer.appendChild(img);
-    });
-}
-
-        // Render Foto untuk Editing
-        function renderFinalPhotos() {
-            finalResult.innerHTML = '';
-            
-            photos.forEach((photo, photoIndex) => {
-                const container = document.createElement('div');
-                container.className = 'photo-with-sticker';
-                container.dataset.photoIndex = photoIndex;
-                
-                const img = document.createElement('img');
-                img.src = photo;
-                img.className = 'final-photo';
-                // [UPDATE INI] Pakai border size yang dipilih
-        if (selectedBorderSize === "large") {
-            img.classList.add("large-frame");
-        }
-        img.style.borderColor = selectedFrameColor;
-        container.appendChild(img);
-                
-                if (stickerPositions[photoIndex]) {
-                    stickerPositions[photoIndex].forEach((sticker, idx) => {
-                        const stickerEl = document.createElement('div');
-                        stickerEl.className = 'sticker-preview';
-                        stickerEl.style.backgroundImage = sticker.backgroundImage;
-                        stickerEl.style.left = `${sticker.x}px`;
-                        stickerEl.style.top = `${sticker.y}px`;
-                        stickerEl.dataset.stickerIndex = idx;
-                        container.appendChild(stickerEl);
-                    });
-                }
-                
-                finalResult.appendChild(container);
-            });
-
-            document.querySelectorAll('.photo-with-sticker').forEach(container => {
-                container.addEventListener('click', (e) => {
-                    if (activeSticker && (e.target === container || e.target === container.querySelector('img'))) {
-                        const img = container.querySelector('img');
-                        const rect = img.getBoundingClientRect();
-                        
-                        const x = e.clientX - rect.left - 40;
-                        const y = e.clientY - rect.top - 40;
-                        
-                        const boundedX = Math.max(0, Math.min(x, rect.width - 80));
-                        const boundedY = Math.max(0, Math.min(y, rect.height - 80));
-                        
-                        const photoIndex = parseInt(container.dataset.photoIndex);
-                        if (!stickerPositions[photoIndex]) {
-                            stickerPositions[photoIndex] = [];
-                        }
-                        
-                        stickerPositions[photoIndex].push({
-                            backgroundImage: activeSticker.style.backgroundImage,
-                            x: boundedX,
-                            y: boundedY
-                        });
-                        
-                        renderFinalPhotos();
-                    }
-                });
-            });
-        }
-
-        // Fungsi untuk memuat gambar
-        function loadImage(src) {
-            return new Promise((resolve, reject) => {
-                const img = new Image();
-                img.crossOrigin = "Anonymous";
-                img.src = src;
-                img.onload = () => resolve(img);
-                img.onerror = (err) => reject(err);
-            });
-        }
-
-        // Event Listener untuk Download
-        downloadBtn.addEventListener('click', async function() {
-    if (photos.length === 0) {
-        alert('Tidak ada foto yang bisa didownload!');
-        return;
-    }
-    const originalText = downloadBtn.textContent;
-    downloadBtn.disabled = true;
-    downloadBtn.textContent = 'Memproses...';
-    
-    try {
-        const photoCanvases = [];
-        
-        for (let i = 0; i < photos.length; i++) {
-            const photoCanvas = document.createElement('canvas');
-            const photoCtx = photoCanvas.getContext('2d');
-            const img = new Image();
-            
-            await new Promise((resolve) => {
-                img.onload = () => {
-                    photoCanvas.width = img.width;
-                    photoCanvas.height = img.height;
-                    
-                    // [1] SET WARNA BORDER
-                    photoCtx.fillStyle = selectedFrameColor;
-                    
-                    // [2] UPDATE INI: TAMBAHKAN LOGIKA BORDER SIZE
                     if (selectedBorderSize === "large") {
-                        // Border besar (50px atas/samping, 150px bawah)
-                        photoCtx.fillRect(0, 0, photoCanvas.width, photoCanvas.height); // Fill seluruh canvas
-                        photoCtx.drawImage(img, 50, 50, photoCanvas.width - 100, photoCanvas.height - 200); 
-                    } else {
-                        // Border kecil (10px semua sisi)
-                        photoCtx.fillRect(0, 0, photoCanvas.width, photoCanvas.height); // Fill seluruh canvas
-                        photoCtx.drawImage(img, 20, 20, photoCanvas.width - 40, photoCanvas.height - 70);
+                        img.style.borderWidth = "30px";
+                        img.style.borderBottomWidth = "80px";
                     }
+                },
+                applyToCanvas: function(ctx, canvas, photoIndex) {
+                    // Apply basic frame color
+                    ctx.fillStyle = selectedFrameColor;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
                     
-                    // [3] PROSES STICKER (JANGAN DIUBAH)
-                    if (stickerPositions[i]) {
-                        const stickerPromises = stickerPositions[i].map(async (sticker) => {
-                            try {
-                                const url = sticker.backgroundImage.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
-                                const stickerImg = await loadImage(url);
-                                photoCtx.drawImage(stickerImg, sticker.x, sticker.y, 80, 80);
-                            } catch (error) {
-                                console.error('Error loading sticker:', error);
-                            }
-                        });
-                        Promise.all(stickerPromises).then(resolve);
+                    // Draw the photo
+                    if (selectedBorderSize === "large") {
+                        ctx.drawImage(photos[photoIndex], 30, 30, canvas.width - 60, canvas.height - 110);
                     } else {
-                        resolve();
+                        ctx.drawImage(photos[photoIndex], 10, 10, canvas.width - 20, canvas.height - 50);
                     }
-                };
-                img.src = photos[i];
-            });
-            photoCanvases.push(photoCanvas);
-        }
-                
-                // Buat canvas final
-                const finalCanvas = document.createElement('canvas');
-                const finalCtx = finalCanvas.getContext('2d');
-                
-                if (selectedLayout === 'D') {
-                    const imgWidth = photoCanvases[0].width;
-                    const imgHeight = photoCanvases[0].height;
-                    finalCanvas.width = imgWidth * 2;
-                    finalCanvas.height = imgHeight * 3;
-                    
-                    photoCanvases.forEach((canvas, index) => {
-                        const row = Math.floor(index / 2);
-                        const col = index % 2;
-                        finalCtx.drawImage(canvas, col * imgWidth, row * imgHeight);
-                    });
-                } else if (selectedLayout === 'E') {
-                    const imgWidth = photoCanvases[0].width;
-                    const imgHeight = photoCanvases[0].height;
-                    finalCanvas.width = imgWidth * 2;
-                    finalCanvas.height = imgHeight * 2;
-                    
-                    photoCanvases.forEach((canvas, index) => {
-                        const row = Math.floor(index / 2);
-                        const col = index % 2;
-                        finalCtx.drawImage(canvas, col * imgWidth, row * imgHeight);
-                    });
-                } else {
-                    const imgWidth = photoCanvases[0].width;
-                    const imgHeight = photoCanvases[0].height;
-                    finalCanvas.width = imgWidth;
-                    finalCanvas.height = imgHeight * photoCanvases.length;
-                    
-                    photoCanvases.forEach((canvas, index) => {
-                        finalCtx.drawImage(canvas, 0, index * imgHeight);
-                    });
                 }
+            },
+            hearts: {
+                apply: function(container) {
+                    // Jangan hapus border, hanya tambahkan elemen di atasnya
+                    const img = container.querySelector("img");
+                    img.style.borderColor = selectedFrameColor;
+                    
+                    // Tambahkan icon di berbagai posisi (lebih banyak dan variatif)
+                    addBorderIcon(container, "20%", "10%", "heart");
+                    addBorderIcon(container, "80%", "10%", "heart");
+                    addBorderIcon(container, "15%", "30%", "heart");
+                    addBorderIcon(container, "85%", "30%", "heart");
+                    addBorderIcon(container, "10%", "60%", "heart");
+                    addBorderIcon(container, "90%", "60%", "heart");
+                    addBorderIcon(container, "30%", "80%", "heart");
+                    addBorderIcon(container, "70%", "80%", "heart");
+                    
+                    // Tambahkan text
+                    addTemplateText(container, "Love & Peace");
+                },
+                applyToCanvas: function(ctx, canvas, photoIndex) {
+                    // Apply frame with hearts
+                    ctx.fillStyle = selectedFrameColor;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    
+                    // Draw the photo
+                    const photoWidth = selectedBorderSize === "large" ? canvas.width - 60 : canvas.width - 20;
+                    const photoHeight = selectedBorderSize === "large" ? canvas.height - 110 : canvas.height - 50;
+                    const photoX = selectedBorderSize === "large" ? 30 : 10;
+                    const photoY = selectedBorderSize === "large" ? 30 : 10;
+                    
+                    ctx.drawImage(photos[photoIndex], photoX, photoY, photoWidth, photoHeight);
+                    
+                    // Draw hearts (simplified version since we can't use Font Awesome on canvas)
+                    ctx.fillStyle = "#ffffff";
+                    const heartSize = 15;
+                    
+                    // Positions for hearts
+                    const positions = [
+                        {x: 0.2, y: 0.1}, {x: 0.8, y: 0.1},
+                        {x: 0.15, y: 0.3}, {x: 0.85, y: 0.3},
+                        {x: 0.1, y: 0.6}, {x: 0.9, y: 0.6},
+                        {x: 0.3, y: 0.8}, {x: 0.7, y: 0.8}
+                    ];
+                    
+                    positions.forEach(pos => {
+                        drawHeart(ctx, 
+                            pos.x * canvas.width, 
+                            pos.y * canvas.height, 
+                            heartSize);
+                    });
+                    
+                    // Add text
+                    ctx.font = selectedBorderSize === "large" ? "32px Arial" : "24px Arial";
+                    ctx.fillStyle = "#ffffff";
+                    ctx.textAlign = "center";
+                    ctx.textBaseline = "bottom";
+                    ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
+                    ctx.shadowOffsetX = 2;
+                    ctx.shadowOffsetY = 2;
+                    ctx.shadowBlur = 4;
+                    
+                    const textY = selectedBorderSize === "large" ? canvas.height - 30 : canvas.height - 10;
+                    ctx.fillText("Love & Peace", canvas.width / 2, textY);
+                }
+            },
+            stars: {
+                apply: function(container) {
+                    const img = container.querySelector("img");
+                    img.style.borderColor = selectedFrameColor;
+                    
+                    addBorderIcon(container, "10%", "15%", "star");
+                    addBorderIcon(container, "90%", "15%", "star");
+                    addBorderIcon(container, "50%", "20%", "star");
+                    addBorderIcon(container, "20%", "50%", "star");
+                    addBorderIcon(container, "80%", "50%", "star");
+                    addBorderIcon(container, "10%", "75%", "star");
+                    addBorderIcon(container, "90%", "75%", "star");
+                    addBorderIcon(container, "50%", "85%", "star");
+                    
+                    addTemplateText(container, "Shining Star");
+                },
+                applyToCanvas: function(ctx, canvas, photoIndex) {
+                    ctx.fillStyle = selectedFrameColor;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    
+                    const photoWidth = selectedBorderSize === "large" ? canvas.width - 60 : canvas.width - 20;
+                    const photoHeight = selectedBorderSize === "large" ? canvas.height - 110 : canvas.height - 50;
+                    const photoX = selectedBorderSize === "large" ? 30 : 10;
+                    const photoY = selectedBorderSize === "large" ? 30 : 10;
+                    
+                    ctx.drawImage(photos[photoIndex], photoX, photoY, photoWidth, photoHeight);
+                    
+                    ctx.fillStyle = "#ffffff";
+                    const starSize = 15;
+                    
+                    const positions = [
+                        {x: 0.1, y: 0.15}, {x: 0.9, y: 0.15},
+                        {x: 0.5, y: 0.2}, {x: 0.2, y: 0.5},
+                        {x: 0.8, y: 0.5}, {x: 0.1, y: 0.75},
+                        {x: 0.9, y: 0.75}, {x: 0.5, y: 0.85}
+                    ];
+                    
+                    positions.forEach(pos => {
+                        drawStar(ctx, 
+                            pos.x * canvas.width, 
+                            pos.y * canvas.height, 
+                            5, starSize, starSize/2);
+                    });
+                    
+                    ctx.font = selectedBorderSize === "large" ? "32px Arial" : "24px Arial";
+                    ctx.fillStyle = "#ffffff";
+                    ctx.textAlign = "center";
+                    ctx.textBaseline = "bottom";
+                    ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
+                    ctx.shadowOffsetX = 2;
+                    ctx.shadowOffsetY = 2;
+                    ctx.shadowBlur = 4;
+                    
+                    const textY = selectedBorderSize === "large" ? canvas.height - 30 : canvas.height - 10;
+                    ctx.fillText("Shining Star", canvas.width / 2, textY);
+                }
+            },
+            flowers: {
+                apply: function(container) {
+                    const img = container.querySelector("img");
+                    img.style.borderColor = selectedFrameColor;
+                    addBorderIcon(container, "15%", "10%", "leaf");
+        addBorderIcon(container, "85%", "10%", "leaf");
+        addBorderIcon(container, "25%", "25%", "leaf");
+        addBorderIcon(container, "75%", "25%", "leaf");
+        addBorderIcon(container, "40%", "40%", "leaf");
+        addBorderIcon(container, "60%", "40%", "leaf");
+        addBorderIcon(container, "10%", "70%", "leaf");
+        addBorderIcon(container, "90%", "70%", "leaf");
+        
+        // Add template text
+        addTemplateText(container, "Beautiful Day");
+    },
 
+                    
+
+            applyToCanvas: function(ctx, canvas, photoIndex) {
+            ctx.fillStyle = selectedFrameColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-
-// Add this to your JavaScript
-const templates = {
-    manga: {
-        imgSrc: "manga.png",
-        photoPosition: { width: "80%", left: "10%", top: "15%" }
+            const photoWidth = selectedBorderSize === "large" ? canvas.width - 60 : canvas.width - 20;
+            const photoHeight = selectedBorderSize === "large" ? canvas.height - 110 : canvas.height - 50;
+            const photoX = selectedBorderSize === "large" ? 30 : 10;
+            const photoY = selectedBorderSize === "large" ? 30 : 10;
+            
+            ctx.drawImage(photos[photoIndex], photoX, photoY, photoWidth, photoHeight);
+            
+            ctx.fillStyle = "#ffffff";
+            const flowerSize = 15;
+            
+            const positions = [
+                {x: 0.15, y: 0.1}, {x: 0.85, y: 0.1},
+                {x: 0.25, y: 0.25}, {x: 0.75, y: 0.25},
+                {x: 0.4, y: 0.4}, {x: 0.6, y: 0.4},
+                {x: 0.1, y: 0.7}, {x: 0.9, y: 0.7}
+            ];
+            
+            positions.forEach(pos => {
+                drawFlower(ctx, 
+                    pos.x * canvas.width, 
+                    pos.y * canvas.height, 
+                    flowerSize);
+            });
+            
+            ctx.font = selectedBorderSize === "large" ? "32px Arial" : "24px Arial";
+            ctx.fillStyle = "#ffffff";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "bottom";
+            ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
+            ctx.shadowOffsetX = 2;
+            ctx.shadowOffsetY = 2;
+            ctx.shadowBlur = 4;
+            
+            const textY = selectedBorderSize === "large" ? canvas.height - 30 : canvas.height - 10;
+            ctx.fillText("Beautiful Day", canvas.width / 2, textY);
+        }
     },
-    santai: {
-        imgSrc: "santai.png", 
-        photoPosition: { width: "75%", left: "12%", top: "20%" }
+    music: {
+        apply: function(container) {
+            const img = container.querySelector("img");
+            img.style.borderColor = selectedFrameColor;
+            
+            addBorderIcon(container, "10%", "20%", "music");
+            addBorderIcon(container, "30%", "15%", "music");
+            addBorderIcon(container, "70%", "15%", "music");
+            addBorderIcon(container, "90%", "20%", "music");
+            addBorderIcon(container, "20%", "60%", "music");
+            addBorderIcon(container, "40%", "65%", "music");
+            addBorderIcon(container, "60%", "65%", "music");
+            addBorderIcon(container, "80%", "60%", "music");
+            
+            addTemplateText(container, "Music Festival");
+        },
+        applyToCanvas: function(ctx, canvas, photoIndex) {
+            ctx.fillStyle = selectedFrameColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            const photoWidth = selectedBorderSize === "large" ? canvas.width - 60 : canvas.width - 20;
+            const photoHeight = selectedBorderSize === "large" ? canvas.height - 110 : canvas.height - 50;
+            const photoX = selectedBorderSize === "large" ? 30 : 10;
+            const photoY = selectedBorderSize === "large" ? 30 : 10;
+            
+            ctx.drawImage(photos[photoIndex], photoX, photoY, photoWidth, photoHeight);
+            
+            ctx.fillStyle = "#ffffff";
+            const noteSize = 15;
+            
+            const positions = [
+                {x: 0.1, y: 0.2}, {x: 0.3, y: 0.15},
+                {x: 0.7, y: 0.15}, {x: 0.9, y: 0.2},
+                {x: 0.2, y: 0.6}, {x: 0.4, y: 0.65},
+                {x: 0.6, y: 0.65}, {x: 0.8, y: 0.6}
+            ];
+            
+            positions.forEach(pos => {
+                drawMusicNote(ctx, 
+                    pos.x * canvas.width, 
+                    pos.y * canvas.height, 
+                    noteSize);
+            });
+            
+            ctx.font = selectedBorderSize === "large" ? "32px Arial" : "24px Arial";
+            ctx.fillStyle = "#ffffff";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "bottom";
+            ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
+            ctx.shadowOffsetX = 2;
+            ctx.shadowOffsetY = 2;
+            ctx.shadowBlur = 4;
+            
+            const textY = selectedBorderSize === "large" ? canvas.height - 30 : canvas.height - 10;
+            ctx.fillText("Music Festival", canvas.width / 2, textY);
+        }
     },
-    meme: {
-        imgSrc: "meme.png",
-        photoPosition: { width: "85%", left: "7%", top: "10%" }
+    balloons: {
+        apply: function(container) {
+            const img = container.querySelector("img");
+            img.style.borderColor = selectedFrameColor;
+            
+            addBorderIcon(container, "15%", "10%", "birthday-cake");
+            addBorderIcon(container, "35%", "5%", "birthday-cake");
+            addBorderIcon(container, "65%", "5%", "birthday-cake");
+            addBorderIcon(container, "85%", "10%", "birthday-cake");
+            addBorderIcon(container, "20%", "70%", "birthday-cake");
+            addBorderIcon(container, "40%", "75%", "birthday-cake");
+            addBorderIcon(container, "60%", "75%", "birthday-cake");
+            addBorderIcon(container, "80%", "70%", "birthday-cake");
+            
+            addTemplateText(container, "Happy Birthday");
+        },
+        applyToCanvas: function(ctx, canvas, photoIndex) {
+            ctx.fillStyle = selectedFrameColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            const photoWidth = selectedBorderSize === "large" ? canvas.width - 60 : canvas.width - 20;
+            const photoHeight = selectedBorderSize === "large" ? canvas.height - 110 : canvas.height - 50;
+            const photoX = selectedBorderSize === "large" ? 30 : 10;
+            const photoY = selectedBorderSize === "large" ? 30 : 10;
+            
+            ctx.drawImage(photos[photoIndex], photoX, photoY, photoWidth, photoHeight);
+            
+            // Draw balloons (simplified)
+            const balloonColors = ["#ff6b6b", "#667eea", "#4caf50", "#ffc107", "#9c27b0"];
+            const balloonSize = 20;
+            
+            const positions = [
+                {x: 0.15, y: 0.1}, {x: 0.35, y: 0.05},
+                {x: 0.65, y: 0.05}, {x: 0.85, y: 0.1},
+                {x: 0.2, y: 0.7}, {x: 0.4, y: 0.75},
+                {x: 0.6, y: 0.75}, {x: 0.8, y: 0.7}
+            ];
+            
+            positions.forEach((pos, i) => {
+                ctx.fillStyle = balloonColors[i % balloonColors.length];
+                drawBalloon(ctx, 
+                    pos.x * canvas.width, 
+                    pos.y * canvas.height, 
+                    balloonSize);
+            });
+            
+            ctx.font = selectedBorderSize === "large" ? "32px Arial" : "24px Arial";
+            ctx.fillStyle = "#ffffff";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "bottom";
+            ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
+            ctx.shadowOffsetX = 2;
+            ctx.shadowOffsetY = 2;
+            ctx.shadowBlur = 4;
+            
+            const textY = selectedBorderSize === "large" ? canvas.height - 30 : canvas.height - 10;
+            ctx.fillText("Happy Birthday", canvas.width / 2, textY);
+        }
     },
-    astronot: {
-        imgSrc: "astronot.png",
-        photoPosition: { width: "70%", left: "15%", top: "25%" }
+    crowns: {
+        apply: function(container) {
+            const img = container.querySelector("img");
+            img.style.borderColor = selectedFrameColor;
+            
+            addBorderIcon(container, "10%", "10%", "crown");
+            addBorderIcon(container, "30%", "5%", "crown");
+            addBorderIcon(container, "50%", "15%", "crown");
+            addBorderIcon(container, "70%", "5%", "crown");
+            addBorderIcon(container, "90%", "10%", "crown");
+            addBorderIcon(container, "20%", "75%", "crown");
+            addBorderIcon(container, "50%", "80%", "crown");
+            addBorderIcon(container, "80%", "75%", "crown");
+            
+            addTemplateText(container, "Royal Party");
+        },
+        applyToCanvas: function(ctx, canvas, photoIndex) {
+            ctx.fillStyle = selectedFrameColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            const photoWidth = selectedBorderSize === "large" ? canvas.width - 60 : canvas.width - 20;
+            const photoHeight = selectedBorderSize === "large" ? canvas.height - 110 : canvas.height - 50;
+            const photoX = selectedBorderSize === "large" ? 30 : 10;
+            const photoY = selectedBorderSize === "large" ? 30 : 10;
+            
+            ctx.drawImage(photos[photoIndex], photoX, photoY, photoWidth, photoHeight);
+            
+            ctx.fillStyle = "#ffc107"; // Gold color for crowns
+            const crownSize = 20;
+            
+            const positions = [
+                {x: 0.1, y: 0.1}, {x: 0.3, y: 0.05},
+                {x: 0.5, y: 0.15}, {x: 0.7, y: 0.05},
+                {x: 0.9, y: 0.1}, {x: 0.2, y: 0.75},
+                {x: 0.5, y: 0.8}, {x: 0.8, y: 0.75}
+            ];
+            
+            positions.forEach(pos => {
+                drawCrown(ctx, 
+                    pos.x * canvas.width, 
+                    pos.y * canvas.height, 
+                    crownSize);
+            });
+            
+            ctx.font = selectedBorderSize === "large" ? "32px Arial" : "24px Arial";
+            ctx.fillStyle = "#ffffff";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "bottom";
+            ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
+            ctx.shadowOffsetX = 2;
+            ctx.shadowOffsetY = 2;
+            ctx.shadowBlur = 4;
+            
+            const textY = selectedBorderSize === "large" ? canvas.height - 30 : canvas.height - 10;
+            ctx.fillText("Royal Party", canvas.width / 2, textY);
+        }
     }
 };
 
-function applyTemplate(templateName) {
-    const template = templates[templateName];
+// Helper functions for canvas drawing
+function drawHeart(ctx, x, y, size) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(x, y + size/4);
+    ctx.bezierCurveTo(x, y, x - size/2, y, x - size/2, y + size/4);
+    ctx.bezierCurveTo(x - size/2, y + size/2, x, y + size, x, y + size);
+    ctx.bezierCurveTo(x, y + size, x + size/2, y + size/2, x + size/2, y + size/4);
+    ctx.bezierCurveTo(x + size/2, y, x, y, x, y + size/4);
+    ctx.fill();
+    ctx.restore();
+}
+
+function drawStar(ctx, cx, cy, spikes, outerRadius, innerRadius) {
+    let rot = Math.PI/2*3;
+    let x = cx;
+    let y = cy;
+    let step = Math.PI/spikes;
+
+    ctx.beginPath();
+    ctx.moveTo(cx, cy - outerRadius);
+    for(let i = 0; i < spikes; i++) {
+        x = cx + Math.cos(rot) * outerRadius;
+        y = cy + Math.sin(rot) * outerRadius;
+        ctx.lineTo(x, y);
+        rot += step;
+
+        x = cx + Math.cos(rot) * innerRadius;
+        y = cy + Math.sin(rot) * innerRadius;
+        ctx.lineTo(x, y);
+        rot += step;
+    }
+    ctx.lineTo(cx, cy - outerRadius);
+    ctx.closePath();
+    ctx.fill();
+}
+
+function drawFlower(ctx, x, y, size) {
+    ctx.save();
+    ctx.translate(x, y);
     
-    document.querySelectorAll('.photo-with-sticker').forEach(container => {
-        // Remove existing template
-        const existingFrame = container.querySelector('.template-frame');
-        if (existingFrame) container.removeChild(existingFrame);
-        
-        // Create new frame
-        const frame = document.createElement('div');
-        frame.className = 'template-frame';
-        frame.style.backgroundImage = `url(${template.imgSrc})`;
-        container.prepend(frame);
-        
-        // Adjust photo position
-        const photo = container.querySelector('img');
-        Object.assign(photo.style, {
-            position: 'absolute',
-            zIndex: '5',
-            width: template.photoPosition.width,
-            left: template.photoPosition.left,
-            top: template.photoPosition.top,
-            border: 'none'
+    // Draw petals
+    ctx.fillStyle = "#ffffff";
+    for(let i = 0; i < 5; i++) {
+        ctx.beginPath();
+        ctx.ellipse(0, -size/2, size/2, size, 0, 0, Math.PI*2);
+        ctx.fill();
+        ctx.rotate(Math.PI*2/5);
+    }
+    
+    // Draw center
+    ctx.fillStyle = "#ffc107";
+    ctx.beginPath();
+    ctx.arc(0, 0, size/3, 0, Math.PI*2);
+    ctx.fill();
+    
+    ctx.restore();
+}
+
+function drawMusicNote(ctx, x, y, size) {
+    ctx.save();
+    ctx.translate(x, y);
+    
+    // Draw note head
+    ctx.beginPath();
+    ctx.ellipse(0, 0, size/3, size/2, 0, 0, Math.PI*2);
+    ctx.fill();
+    
+    // Draw stem
+    ctx.fillRect(size/3, -size*1.5, size/5, size*1.5);
+    
+    ctx.restore();
+}
+
+function drawBalloon(ctx, x, y, size) {
+    ctx.save();
+    ctx.translate(x, y);
+    
+    // Draw balloon
+    ctx.beginPath();
+    ctx.ellipse(0, 0, size, size*1.3, 0, 0, Math.PI*2);
+    ctx.fill();
+    
+    // Draw knot
+    ctx.fillStyle = "#ffffff";
+    ctx.beginPath();
+    ctx.arc(0, size*1.3, size/5, 0, Math.PI*2);
+    ctx.fill();
+    
+    ctx.restore();
+}
+
+function drawCrown(ctx, x, y, size) {
+    ctx.save();
+    ctx.translate(x, y);
+    
+    // Draw crown base
+    ctx.beginPath();
+    ctx.moveTo(-size, size/2);
+    ctx.lineTo(-size, -size/2);
+    ctx.lineTo(-size/2, 0);
+    ctx.lineTo(0, -size/2);
+    ctx.lineTo(size/2, 0);
+    ctx.lineTo(size, -size/2);
+    ctx.lineTo(size, size/2);
+    ctx.closePath();
+    ctx.fill();
+    
+    // Draw jewels
+    ctx.fillStyle = "#ff6b6b";
+    ctx.beginPath();
+    ctx.arc(-size/2, -size/4, size/4, 0, Math.PI*2);
+    ctx.fill();
+    
+    ctx.fillStyle = "#667eea";
+    ctx.beginPath();
+    ctx.arc(0, -size/2, size/4, 0, Math.PI*2);
+    ctx.fill();
+    
+    ctx.fillStyle = "#4caf50";
+    ctx.beginPath();
+    ctx.arc(size/2, -size/4, size/4, 0, Math.PI*2);
+    ctx.fill();
+    
+    ctx.restore();
+}
+
+// Fungsi untuk menambahkan icon di border dengan posisi persentase
+function addBorderIcon(container, left, top, iconType) {
+    const icon = document.createElement("i");
+    icon.className = `border-icon fas fa-${iconType} icon-${iconType}`;
+    icon.style.left = left;
+    icon.style.top = top;
+    container.appendChild(icon);
+}
+
+// Fungsi untuk menambahkan text decoration
+function addTemplateText(container, text) {
+    const textEl = document.createElement("div");
+    textEl.className = "template-text";
+    textEl.textContent = text;
+    container.appendChild(textEl);
+}
+
+// Initialize voice recognition
+function initVoiceRecognition() {
+    try {
+        const SpeechRecognition =
+            window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = false;
+        recognition.lang = "id-ID";
+
+        recognition.onstart = function () {
+            isListening = true;
+            voiceStatus.classList.add("listening");
+            voiceStatus.querySelector("span").textContent = "Voice Command: ON";
+        };
+
+        recognition.onend = function () {
+            isListening = false;
+            voiceStatus.classList.remove("listening");
+            voiceStatus.querySelector("span").textContent = "Voice Command: OFF";
+            if (currentPage !== "page-start") {
+                setTimeout(startListening, 500);
+            }
+        };
+
+        recognition.onerror = function (event) {
+            console.error("Voice recognition error", event.error);
+            if (event.error === "not-allowed") {
+                voiceStatus.querySelector("span").textContent =
+                    "Voice Command: Blocked";
+            }
+        };
+
+        recognition.onresult = function (event) {
+            const last = event.results.length - 1;
+            const command = event.results[last][0].transcript.toLowerCase().trim();
+            console.log("Voice command:", command);
+
+            handleVoiceCommand(command);
+        };
+
+        startListening();
+    } catch (e) {
+        console.error("Voice recognition not supported", e);
+        voiceStatus.style.display = "none";
+    }
+}
+
+// Start listening for voice commands
+function startListening() {
+    if (recognition && !isListening) {
+        try {
+            recognition.start();
+        } catch (e) {
+            console.error("Error starting recognition:", e);
+        }
+    }
+}
+
+// Stop listening for voice commands
+function stopListening() {
+    if (recognition && isListening) {
+        recognition.stop();
+    }
+}
+
+// Handle voice commands based on current page
+function handleVoiceCommand(command) {
+    switch (currentPage) {
+        case "page-start":
+            if (command.includes("mulai")) {
+                startBtn.click();
+            }
+            break;
+
+        case "page-layout":
+            if (command.includes("empat foto vertikal")) {
+                document
+                    .querySelector('.layout-option[data-layout="A"]')
+                    .click();
+            } else if (command.includes("tiga foto vertikal")) {
+                document
+                    .querySelector('.layout-option[data-layout="B"]')
+                    .click();
+            } else if (command.includes("dua foto vertikal")) {
+                document
+                    .querySelector('.layout-option[data-layout="C"]')
+                    .click();
+            } else if (command.includes("enam foto dua kali tiga")) {
+                document
+                    .querySelector('.layout-option[data-layout="D"]')
+                    .click();
+            } else if (command.includes("empat foto 2 kali 2")) {
+                document
+                    .querySelector('.layout-option[data-layout="E"]')
+                    .click();
+                                   
+            } else if (command.includes("satu foto vertikal")) {
+                document
+                    .querySelector('.layout-option[data-layout="F"]')
+                    .click();
+            }
+            break;
+
+        case "page-photo":
+            if (command.includes("filter")) {
+                filterSelect.focus();
+                if (command.includes("grayscale") || command.includes("abu-abu")) {
+                    filterSelect.value = "grayscale";
+                    filterSelect.dispatchEvent(new Event("change"));
+                } else if (command.includes("sepia")) {
+                    filterSelect.value = "sepia";
+                    filterSelect.dispatchEvent(new Event("change"));
+                } else if (command.includes("invert")) {
+                    filterSelect.value = "invert";
+                    filterSelect.dispatchEvent(new Event("change"));
+                } else if (command.includes("vintage")) {
+                    filterSelect.value = "vintage";
+                    filterSelect.dispatchEvent(new Event("change"));
+                } else if (command.includes("cool")) {
+                    filterSelect.value = "cool";
+                    filterSelect.dispatchEvent(new Event("change"));
+                } else if (command.includes("warm")) {
+                    filterSelect.value = "warm";
+                    filterSelect.dispatchEvent(new Event("change"));
+                } else if (
+                    command.includes("hitam putih") ||
+                    command.includes("blackwhite")
+                ) {
+                    filterSelect.value = "blackwhite";
+                    filterSelect.dispatchEvent(new Event("change"));
+                } else if (command.includes("blur")) {
+                    filterSelect.value = "blur";
+                    filterSelect.dispatchEvent(new Event("change"));
+                } else if (
+                    command.includes("pelangi") ||
+                    command.includes("hue rotate")
+                ) {
+                    filterSelect.value = "hue-rotate";
+                    filterSelect.dispatchEvent(new Event("change"));
+                } else if (
+                    command.includes("kontras") ||
+                    command.includes("contrast")
+                ) {
+                    filterSelect.value = "contrast";
+                    filterSelect.dispatchEvent(new Event("change"));
+                } else if (
+                    command.includes("saturasi") ||
+                    command.includes("saturate")
+                ) {
+                    filterSelect.value = "saturate";
+                    filterSelect.dispatchEvent(new Event("change"));
+                } else if (command.includes("neon")) {
+                    filterSelect.value = "neon";
+                    filterSelect.dispatchEvent(new Event("change"));
+                } else if (
+                    command.includes("bayangan") ||
+                    command.includes("shadow")
+                ) {
+                    filterSelect.value = "shadow";
+                    filterSelect.dispatchEvent(new Event("change"));
+                } else if (
+                    command.includes("focus") ||
+                    command.includes("soft focus")
+                ) {
+                    filterSelect.value = "focus";
+                    filterSelect.dispatchEvent(new Event("change"));
+                } else if (
+                    command.includes("none") ||
+                    command.includes("tanpa filter")
+                ) {
+                    filterSelect.value = "none";
+                    filterSelect.dispatchEvent(new Event("change"));
+                }
+            } else if (
+                command.includes("hitung mundur") ||
+                command.includes("countdown")
+            ) {
+                timerSelect.focus();
+                if (
+                    command.includes("3") ||
+                    command.includes("3 detik") ||
+                    command.includes("3s")
+                ) {
+                    timerSelect.value = "3";
+                } else if (
+                    command.includes("5") ||
+                    command.includes("5 detik") ||
+                    command.includes("5s")
+                ) {
+                    timerSelect.value = "5";
+                } else if (
+                    command.includes("10") ||
+                    command.includes("10 detik") ||
+                    command.includes("10s")
+                ) {
+                    timerSelect.value = "10";
+                }
+            } else if (
+                command.includes("cek rek") ||
+                command.includes("ambil foto") ||
+                command.includes("capture")
+            ) {
+                captureBtn.click();
+            } else if (command.includes("hapus") || command.includes("delete")) {
+                deleteBtn.click();
+            } else if (
+                command.includes("lanjut") ||
+                command.includes("continue")
+            ) {
+                if (continueBtn.style.display !== "none") {
+                    continueBtn.click();
+                }
+            }
+            break;
+
+        case "page-edit":
+            if (command.includes("warna")) {
+                for (const [colorCode, colorName] of Object.entries(colorNames)) {
+                    if (command.includes(colorName)) {
+                        const colorElement = document.querySelector(
+                            `.frame-color[data-color="${colorCode}"]`
+                        );
+                        if (colorElement) {
+                            colorElement.click();
+                        }
+                        break;
+                    }
+                }
+            } else if (
+                command.includes("stiker") ||
+                command.includes("sticker") ||
+                command.includes("emoji")
+            ) {
+                for (const [stickerId, stickerName] of Object.entries(stickerNames)) {
+                    if (command.includes(stickerName)) {
+                        const stickerElement = document.querySelector(
+                            `.sticker[data-sticker="${stickerId}"]`
+                        );
+                        if (stickerElement) {
+                            stickerElement.click();
+                        }
+                        break;
+                    }
+                }
+            } else if (
+                command.includes("template") ||
+                command.includes("bingkai")
+            ) {
+                if (command.includes("heart") || command.includes("hati")) {
+                    document
+                        .querySelector('.template-option[data-template="hearts"]')
+                        .click();
+                } else if (command.includes("star") || command.includes("bintang")) {
+                    document
+                        .querySelector('.template-option[data-template="stars"]')
+                        .click();
+                } else if (
+                    command.includes("flower") ||
+                    command.includes("bunga") ||
+                    command.includes("leaf")
+                ) {
+                    document
+                        .querySelector('.template-option[data-template="flowers"]')
+                        .click();
+                } else if (command.includes("music") || command.includes("musik")) {
+                    document
+                        .querySelector('.template-option[data-template="music"]')
+                        .click();
+                } else if (
+                    command.includes("balloon") ||
+                    command.includes("balon")
+                ) {
+                    document
+                        .querySelector('.template-option[data-template="balloons"]')
+                        .click();
+                } else if (
+                    command.includes("crown") ||
+                    command.includes("mahkota")
+                ) {
+                    document
+                        .querySelector('.template-option[data-template="crowns"]')
+                        .click();
+                }
+            } else if (
+                command.includes("ukuran bingkai") ||
+                command.includes("border size")
+            ) {
+                if (command.includes("kecil") || command.includes("small")) {
+                    document
+                        .querySelector('.border-option[data-border-size="small"]')
+                        .click();
+                } else if (
+                    command.includes("besar") ||
+                    command.includes("large") ||
+                    command.includes("photobooth")
+                ) {
+                    document
+                        .querySelector('.border-option[data-border-size="large"]')
+                        .click();
+                }
+            } else if (command.includes("download") || command.includes("unduh")) {
+                downloadBtn.click();
+            }
+            break;
+    }
+}
+
+// Fungsi Navigasi Halaman
+function showPage(pageId) {
+    if (currentPage === "page-photo" && pageId !== "page-photo") {
+        stopCamera();
+    }
+
+    pages.forEach((page) => {
+        page.classList.remove("active");
+    });
+    document.getElementById(pageId).classList.add("active");
+    currentPage = pageId;
+
+    if (pageId === "page-photo") {
+        initCamera();
+        if (!isListening) {
+            startListening();
+        }
+    } else if (pageId === "page-start") {
+        stopListening();
+    } else {
+        startListening();
+    }
+}
+
+// Inisialisasi Kamera
+async function initCamera() {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: {
+                width: { ideal: 1280 },
+                height: { ideal: 720 },
+                facingMode: "user",
+            },
+        });
+
+        mediaStream = stream;
+        video.srcObject = stream;
+        await video.play();
+    } catch (err) {
+        console.error("Error kamera:", err);
+        alert("Tidak bisa mengakses kamera. Mohon izinkan akses kamera.");
+    }
+}
+
+// Hentikan Kamera
+function stopCamera() {
+    if (mediaStream) {
+        mediaStream.getTracks().forEach((track) => track.stop());
+        video.srcObject = null;
+    }
+}
+
+// Mulai Countdown
+function startCountdown() {
+    if (photos.length >= totalPoses) {
+        // Prevent capturing more photos than totalPoses
+        return;
+    }
+    let timeLeft = parseInt(timerSelect.value);
+    countdownEl.textContent = timeLeft;
+    countdownEl.style.display = "flex";
+
+    captureBtn.disabled = true;
+    deleteBtn.disabled = true;
+
+    countdownInterval = setInterval(() => {
+        timeLeft--;
+        countdownEl.textContent = timeLeft;
+
+        if (timeLeft <= 0) {
+            clearInterval(countdownInterval);
+            countdownEl.style.display = "none";
+            takePhoto();
+
+            if (photos.length < totalPoses) {
+                setTimeout(() => {
+                    startCountdown();
+                }, 1000);
+            } else {
+                captureBtn.disabled = false;
+                deleteBtn.disabled = photos.length === 0;
+                document.getElementById("photo-preview").style.display = "block";
+            }
+        }
+    }, 1000);
+}
+
+// Ambil Foto
+function takePhoto() {
+    const targetWidth = 600;
+    const targetHeight = 900;
+
+    canvas.width = targetWidth;
+    canvas.height = targetHeight;
+
+    const videoAspect = video.videoWidth / video.videoHeight;
+    const canvasAspect = targetWidth / targetHeight;
+
+    let renderWidth, renderHeight, offsetX, offsetY;
+
+    if (videoAspect > canvasAspect) {
+        renderHeight = targetHeight;
+        renderWidth = video.videoWidth * (targetHeight / video.videoHeight);
+        offsetX = (targetWidth - renderWidth) / 2;
+        offsetY = 0;
+    } else {
+        renderWidth = targetWidth;
+        renderHeight = video.videoHeight * (targetWidth / video.videoWidth);
+        offsetX = 0;
+        offsetY = (targetHeight - renderHeight) / 2;
+    }
+
+    ctx.filter = filters[currentFilter];
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(video, offsetX, offsetY, renderWidth, renderHeight);
+
+    video.style.filter = filters[currentFilter];
+
+    const photoData = canvas.toDataURL("image/png");
+    photos.push(photoData);
+    currentPose = photos.length; // update currentPose to photos.length
+
+    updatePhotoPreview();
+}
+
+// Update Preview Foto
+function updatePhotoPreview() {
+    photosContainer.innerHTML = "";
+    photos.forEach((photo, index) => {
+        const container = document.createElement("div");
+        container.className = "photo-with-sticker";
+        container.dataset.photoIndex = index;
+
+        const img = document.createElement("img");
+        img.src = photo;
+        img.className = "final-photo";
+        if (selectedBorderSize === "large") {
+            img.classList.add("large-frame");
+        }
+        img.style.borderColor = selectedFrameColor;
+
+        container.appendChild(img);
+        photosContainer.appendChild(container);
+    });
+}
+
+// Render Foto untuk Editing
+function renderFinalPhotos() {
+    finalResult.innerHTML = "";
+
+    if (photos.length === 0) {
+        finalResult.innerHTML =
+            "<p>Tidak ada foto untuk ditampilkan. Silakan ambil foto terlebih dahulu.</p>";
+        return;
+    }
+
+    photos.forEach((photo, photoIndex) => {
+        const container = document.createElement("div");
+        container.className = "photo-with-sticker";
+        container.dataset.photoIndex = photoIndex;
+
+        const img = document.createElement("img");
+        img.src = photo;
+        img.className = "final-photo";
+        img.style.display = "block";
+        img.style.maxWidth = "100%";
+        img.style.height = "auto";
+
+        if (selectedBorderSize === "large") {
+            img.classList.add("large-frame");
+        }
+
+        container.appendChild(img);
+
+        // Apply template - ensure correct application on container
+        if (currentTemplate && templates[currentTemplate]) {
+            templates[currentTemplate].apply(container);
+        } else {
+            templates["null"].apply(container);
+        }
+
+        // Add stickers if any
+        if (stickerPositions[photoIndex]) {
+            stickerPositions[photoIndex].forEach((sticker, idx) => {
+                const stickerEl = document.createElement("div");
+                stickerEl.className = "sticker-preview";
+                stickerEl.style.backgroundImage = sticker.backgroundImage;
+                stickerEl.style.left = `${sticker.x}px`;
+                stickerEl.style.top = `${sticker.y}px`;
+                stickerEl.dataset.stickerIndex = idx;
+                container.appendChild(stickerEl);
+            });
+        }
+
+        finalResult.appendChild(container);
+    });
+
+    // Add click listeners for stickers (to add more)
+    document.querySelectorAll(".photo-with-sticker").forEach((container) => {
+        container.addEventListener("click", (e) => {
+            if (
+                activeSticker &&
+                (e.target === container || e.target === container.querySelector("img"))
+            ) {
+                const img = container.querySelector("img");
+                const rect = img.getBoundingClientRect();
+
+                const x = e.clientX - rect.left - 40;
+                const y = e.clientY - rect.top - 40;
+
+                const boundedX = Math.max(0, Math.min(x, rect.width - 80));
+                const boundedY = Math.max(0, Math.min(y, rect.height - 80));
+
+                const photoIndex = parseInt(container.dataset.photoIndex);
+                if (!stickerPositions[photoIndex]) {
+                    stickerPositions[photoIndex] = [];
+                }
+
+                stickerPositions[photoIndex].push({
+                    backgroundImage: activeSticker.style.backgroundImage,
+                    x: boundedX,
+                    y: boundedY,
+                });
+
+                renderFinalPhotos();
+            }
         });
     });
 }
 
-// Initialize template buttons
-document.querySelectorAll('.template-option').forEach(option => {
-    option.addEventListener('click', function() {
-        applyTemplate(this.dataset.template);
+// Fungsi untuk memuat gambar (dipakai saat download)
+function loadImage(src) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = "Anonymous";
+        img.src = src;
+        img.onload = () => resolve(img);
+        img.onerror = (err) => reject(err);
     });
-});
+}
 
-     
-                
-                // Download
-                finalCanvas.toBlob(blob => {
-                    const link = document.createElement('a');
-                    link.download = 'photobooth-result.png';
-                    link.href = URL.createObjectURL(blob);
-                    link.click();
-                    
-                    notification.style.display = 'block';
-                    setTimeout(() => {
-                        notification.style.display = 'none';
-                    }, 3000);
-                    
-                    downloadBtn.disabled = false;
-                    downloadBtn.textContent = originalText;
-                }, 'image/png');
-                
-            } catch (error) {
-                console.error('Error saat memproses foto:', error);
-                alert('Terjadi kesalahan saat memproses foto. Silakan coba lagi.');
-                downloadBtn.disabled = false;
-                downloadBtn.textContent = originalText;
-            }
+        // Debug Helper Function
+window.debugDownload = async () => {
+  const target = document.querySelector(".photo-with-sticker");
+  if (!target) {
+    alert("Element tidak ditemukan! Cek selector-nya");
+    return;
+  }
+  
+  try {
+    const { default: html2canvas } = await import("https://esm.sh/html2canvas@1.4.1");
+    const canvas = await html2canvas(target, {
+      scale: 1,
+      useCORS: true
+    });
+    
+    canvas.toBlob(blob => {
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "debug-result.png";
+      link.click();
+    });
+  } catch (err) {
+    console.error("Debug Error:", err);
+    alert("Gagal: " + err.message);
+  }
+};
+
+// Nanti bisa panggil via console dengan: debugDownload()
+
+           downloadBtn.addEventListener("click", async function() {
+    if (photos.length === 0) {
+        alert("Belum ada foto yang diambil!");
+        return;
+    }
+
+    const originalText = downloadBtn.textContent;
+    downloadBtn.disabled = true;
+    downloadBtn.textContent = "Memproses...";
+
+    try {
+        // Clone element
+        const previewClone = document.getElementById("final-result").cloneNode(true);
+        document.body.appendChild(previewClone);
+        previewClone.style.position = "fixed";
+        previewClone.style.top = "-9999px";
+
+        // Fix untuk elemen yang belum render
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        const { default: html2canvas } = await import("https://esm.sh/html2canvas@1.4.1");
+        
+        const canvas = await html2canvas(previewClone, {
+            scale: 1,
+            logging: true,
+            useCORS: true,
+            allowTaint: true,
+            backgroundColor: null,
+            scrollX: 0,
+            scrollY: 0
         });
 
-        // Event Listeners lainnya
-        startBtn.addEventListener('click', () => showPage('page-layout'));
+        // Cleanup
+        document.body.removeChild(previewClone);
 
-        layoutOptions.forEach(option => {
-            option.addEventListener('click', () => {
+        // Download
+        canvas.toBlob(blob => {
+            const link = document.createElement("a");
+            link.download = `photobooth-${new Date().getTime()}.png`;
+            link.href = URL.createObjectURL(blob);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            notification.style.display = "block";
+            setTimeout(() => notification.style.display = "none", 3000);
+        }, "image/png", 1);
+
+    } catch (error) {
+        console.error("Download Error:", error);
+        alert("Error: Coba pakai browser Chrome/Firefox terbaru.");
+    } finally {
+        downloadBtn.disabled = false;
+        downloadBtn.textContent = originalText;
+    }
+});
+                        
+
+        // Event Listeners lainnya
+        if (startBtn) {
+            startBtn.addEventListener("click", () => showPage("page-layout"));
+        }
+
+        layoutOptions.forEach((option) => {
+            option.addEventListener("click", () => {
                 selectedLayout = option.dataset.layout;
                 totalPoses = parseInt(option.dataset.poses);
                 currentPose = 0;
                 photos = [];
                 stickerPositions = {};
-                showPage('page-photo');
+                showPage("page-photo");
             });
         });
 
-        filterSelect.addEventListener('change', () => {
-            currentFilter = filterSelect.value;
-            video.style.filter = filters[currentFilter];
-        });
+        if (filterSelect) {
+            filterSelect.addEventListener("change", () => {
+                currentFilter = filterSelect.value;
+                video.style.filter = filters[currentFilter];
+            });
+        }
 
-        captureBtn.addEventListener('click', startCountdown);
+        if (captureBtn) {
+            captureBtn.addEventListener("click", startCountdown);
+        }
 
-        deleteBtn.addEventListener('click', () => {
-            if (photos.length > 0) {
-                photos.pop();
-                delete stickerPositions[photos.length];
-                updatePhotoPreview();
-                currentPose--;
-                
-                if (photos.length === 0) {
-                    document.getElementById('photo-preview').style.display = 'none';
+        if (deleteBtn) {
+            deleteBtn.addEventListener("click", () => {
+                if (photos.length > 0) {
+                    photos.pop();
+                    delete stickerPositions[photos.length];
+                    updatePhotoPreview();
+                    currentPose = photos.length;
+
+                    if (photos.length === 0) {
+                        document.getElementById("photo-preview").style.display = "none";
+                    }
                 }
-            }
-        });
+            });
+        }
 
-        continueBtn.addEventListener('click', () => {
-            showPage('page-edit');
-            renderFinalPhotos();
-        });
+        if (continueBtn) {
+            continueBtn.addEventListener("click", () => {
+                showPage("page-edit");
+                renderFinalPhotos();
+            });
+        }
 
-        frameColors.forEach(color => {
-            color.addEventListener('click', () => {
+        frameColors.forEach((color) => {
+            color.addEventListener("click", () => {
                 selectedFrameColor = color.dataset.color;
                 renderFinalPhotos();
             });
         });
-// [TAMBAH INI PERSIS DI SINI] ↓↓↓
-// Event listener untuk pilihan border size
-document.querySelectorAll('.border-option').forEach(option => {
-    option.addEventListener('click', function() {
-        // Hapus class active dari semua option
-        document.querySelectorAll('.border-option').forEach(opt => {
-            opt.classList.remove('active');
+
+        borderOptions.forEach((option) => {
+            option.addEventListener("click", function () {
+                borderOptions.forEach((opt) => {
+                    opt.classList.remove("active");
+                });
+
+                this.classList.add("active");
+                selectedBorderSize = this.dataset.borderSize;
+                renderFinalPhotos();
+            });
         });
-        
-        // Tambah class active ke option yang diklik
-        this.classList.add('active');
-        selectedBorderSize = this.dataset.borderSize;
-        renderFinalPhotos();
-    });
-});
-        stickers.forEach(sticker => {
-            sticker.addEventListener('click', (e) => {
-                stickers.forEach(s => s.classList.remove('sticker-active'));
-                e.target.classList.add('sticker-active');
+
+        stickers.forEach((sticker) => {
+            sticker.addEventListener("click", (e) => {
+                stickers.forEach((s) => s.classList.remove("sticker-active"));
+                e.target.classList.add("sticker-active");
                 activeSticker = e.target;
             });
         });
 
+        templateOptions.forEach((option) => {
+            option.addEventListener("click", function () {
+                templateOptions.forEach((opt) => {
+                    opt.classList.remove("active");
+                });
+
+                this.classList.add("active");
+                currentTemplate = this.dataset.template;
+                renderFinalPhotos();
+            });
+        });
+
         // Initialize voice recognition when the page loads
-        window.addEventListener('DOMContentLoaded', () => {
+        window.addEventListener("DOMContentLoaded", () => {
             initVoiceRecognition();
-            
-            // Show a welcome message with voice commands
+
             setTimeout(() => {
-                if ('speechSynthesis' in window) {
+                if ("speechSynthesis" in window) {
                     const speech = new SpeechSynthesisUtterance();
-                    speech.text = "Selamat datang di Photobooth Bisnis Digital. Anda dapat menggunakan perintah suara. Katakan 'Mulai' untuk memulai.";
-                    speech.lang = 'id-ID';
+                    speech.text =
+                        "Selamat datang di Photobooth Bisnis Digital. Anda dapat menggunakan perintah suara. Katakan 'Mulai' untuk memulai.";
+                    speech.lang = "id-ID";
                     window.speechSynthesis.speak(speech);
                 }
             }, 1000);
         });
 
         // Cleanup
-        window.addEventListener('beforeunload', () => {
+        window.addEventListener("beforeunload", () => {
             stopCamera();
             stopListening();
         });
-
-             
-    
     </script>
 </body>
-</html>
+                </html>
