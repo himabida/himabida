@@ -2718,6 +2718,23 @@ hr{
       width: 120px !important;
     }
   }
+/* Mobile Optimization */
+@media (max-width: 768px) {
+    .dropdown-content {
+        width: 100%;
+        box-shadow: none;
+        border-top: 1px solid #eee;
+    }
+    
+    .dropdown-content a {
+        padding: 15px;
+        font-size: 16px;
+    }
+    
+    .dropbtn {
+        padding: 15px;
+    }
+}
 
 /**
    * FOOTER 
