@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
 
+
   document.addEventListener('DOMContentLoaded', function() {
     const menuIcon = document.getElementById('menu-icon');
     const navlist = document.querySelector('.navlists');
@@ -155,6 +156,27 @@ document.addEventListener('DOMContentLoaded', function() {
           word.append(span);
       });
   });
+
+// Smooth scroll for product links
+document.querySelectorAll('.dropdown-content a').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+        
+        if (targetElement) {
+            window.scrollTo({
+                top: targetElement.offsetTop - 100,
+                behavior: 'smooth'
+            });
+            
+            // Close dropdown after selection
+            document.querySelector('.dropdown-content').style.display = 'none';
+        }
+    });
+});
+
 let currentWordIndex = 0;
 let maxWordIndex = words.length -1;
 words[currentWordIndex].style.opacity= "1";
