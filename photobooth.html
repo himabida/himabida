@@ -1357,7 +1357,6 @@ function stopListening() {
     }
 }
 
-// Handle voice commands based on current page
 function handleVoiceCommand(command) {
     switch (currentPage) {
         case "page-start":
@@ -1368,139 +1367,92 @@ function handleVoiceCommand(command) {
 
         case "page-layout":
             if (command.includes("empat foto vertikal")) {
-                document
-                    .querySelector('.layout-option[data-layout="A"]')
-                    .click();
+                document.querySelector('.layout-option[data-layout="A"]').click();
             } else if (command.includes("tiga foto vertikal")) {
-                document
-                    .querySelector('.layout-option[data-layout="B"]')
-                    .click();
+                document.querySelector('.layout-option[data-layout="B"]').click();
             } else if (command.includes("dua foto vertikal")) {
-                document
-                    .querySelector('.layout-option[data-layout="C"]')
-                    .click();
+                document.querySelector('.layout-option[data-layout="C"]').click();
             } else if (command.includes("enam foto dua kali tiga")) {
-                document
-                    .querySelector('.layout-option[data-layout="D"]')
-                    .click();
+                document.querySelector('.layout-option[data-layout="D"]').click();
             } else if (command.includes("empat foto 2 kali 2")) {
-                document
-                    .querySelector('.layout-option[data-layout="E"]')
-                    .click();
-                                   
+                document.querySelector('.layout-option[data-layout="E"]').click();                                   
             } else if (command.includes("satu foto vertikal")) {
-                document
-                    .querySelector('.layout-option[data-layout="F"]')
-                    .click();
+                document.querySelector('.layout-option[data-layout="F"]').click();
             }
             break;
 
         case "page-photo":
-            if (command.includes("filter")) {
+            // Perubahan untuk filter - dipisah menjadi 2 tahap
+            if (command === "filter") {
                 filterSelect.focus();
+                if ("speechSynthesis" in window) {
+                    const speech = new SpeechSynthesisUtterance();
+                    speech.text = "Silakan sebutkan nama filter yang diinginkan";
+                    speech.lang = "id-ID";
+                    window.speechSynthesis.speak(speech);
+                }
+            } 
+            else if (filterSelect === document.activeElement) {
+                // Jika dropdown filter sedang aktif/focus
                 if (command.includes("grayscale") || command.includes("abu-abu")) {
                     filterSelect.value = "grayscale";
-                    filterSelect.dispatchEvent(new Event("change"));
                 } else if (command.includes("sepia")) {
                     filterSelect.value = "sepia";
-                    filterSelect.dispatchEvent(new Event("change"));
                 } else if (command.includes("invert")) {
                     filterSelect.value = "invert";
-                    filterSelect.dispatchEvent(new Event("change"));
                 } else if (command.includes("vintage")) {
                     filterSelect.value = "vintage";
-                    filterSelect.dispatchEvent(new Event("change"));
                 } else if (command.includes("cool")) {
                     filterSelect.value = "cool";
-                    filterSelect.dispatchEvent(new Event("change"));
                 } else if (command.includes("warm")) {
                     filterSelect.value = "warm";
-                    filterSelect.dispatchEvent(new Event("change"));
-                } else if (
-                    command.includes("hitam putih") ||
-                    command.includes("blackwhite")
-                ) {
+                } else if (command.includes("hitam putih") || command.includes("blackwhite")) {
                     filterSelect.value = "blackwhite";
-                    filterSelect.dispatchEvent(new Event("change"));
                 } else if (command.includes("blur")) {
                     filterSelect.value = "blur";
-                    filterSelect.dispatchEvent(new Event("change"));
-                } else if (
-                    command.includes("pelangi") ||
-                    command.includes("hue rotate")
-                ) {
+                } else if (command.includes("pelangi") || command.includes("hue rotate")) {
                     filterSelect.value = "hue-rotate";
-                    filterSelect.dispatchEvent(new Event("change"));
-                } else if (
-                    command.includes("kontras") ||
-                    command.includes("contrast")
-                ) {
+                } else if (command.includes("kontras") || command.includes("contrast")) {
                     filterSelect.value = "contrast";
-                    filterSelect.dispatchEvent(new Event("change"));
-                } else if (
-                    command.includes("saturasi") ||
-                    command.includes("saturate")
-                ) {
+                } else if (command.includes("saturasi") || command.includes("saturate")) {
                     filterSelect.value = "saturate";
-                    filterSelect.dispatchEvent(new Event("change"));
                 } else if (command.includes("neon")) {
                     filterSelect.value = "neon";
-                    filterSelect.dispatchEvent(new Event("change"));
-                } else if (
-                    command.includes("bayangan") ||
-                    command.includes("shadow")
-                ) {
+                } else if (command.includes("bayangan") || command.includes("shadow")) {
                     filterSelect.value = "shadow";
-                    filterSelect.dispatchEvent(new Event("change"));
-                } else if (
-                    command.includes("focus") ||
-                    command.includes("soft focus")
-                ) {
+                } else if (command.includes("focus") || command.includes("soft focus")) {
                     filterSelect.value = "focus";
-                    filterSelect.dispatchEvent(new Event("change"));
-                } else if (
-                    command.includes("none") ||
-                    command.includes("tanpa filter")
-                ) {
+                } else if (command.includes("none") || command.includes("tanpa filter")) {
                     filterSelect.value = "none";
-                    filterSelect.dispatchEvent(new Event("change"));
                 }
-            } else if (
-                command.includes("hitung mundur") ||
-                command.includes("countdown")
-            ) {
+                filterSelect.dispatchEvent(new Event("change"));
+            }
+            // Perubahan untuk hitung mundur - dipisah menjadi 2 tahap
+            else if (command === "hitung mundur") {
                 timerSelect.focus();
-                if (
-                    command.includes("3") ||
-                    command.includes("3 detik") ||
-                    command.includes("3s")
-                ) {
+                if ("speechSynthesis" in window) {
+                    const speech = new SpeechSynthesisUtterance();
+                    speech.text = "Silakan sebutkan durasi hitung mundur: 3, 5, atau 10 detik";
+                    speech.lang = "id-ID";
+                    window.speechSynthesis.speak(speech);
+                }
+            }
+            else if (timerSelect === document.activeElement) {
+                // Jika dropdown timer sedang aktif/focus
+                if (command.includes("3") || command.includes("3 detik") || command.includes("3s")) {
                     timerSelect.value = "3";
-                } else if (
-                    command.includes("5") ||
-                    command.includes("5 detik") ||
-                    command.includes("5s")
-                ) {
+                } else if (command.includes("5") || command.includes("5 detik") || command.includes("5s")) {
                     timerSelect.value = "5";
-                } else if (
-                    command.includes("10") ||
-                    command.includes("10 detik") ||
-                    command.includes("10s")
-                ) {
+                } else if (command.includes("10") || command.includes("10 detik") || command.includes("10s")) {
                     timerSelect.value = "10";
                 }
-            } else if (
-                command.includes("cek rek") ||
-                command.includes("ambil foto") ||
-                command.includes("capture")
-            ) {
+                timerSelect.dispatchEvent(new Event("change"));
+            }
+            else if (command.includes("cekrek") || command.includes("ambil foto") || command.includes("capture")) {
                 captureBtn.click();
             } else if (command.includes("hapus") || command.includes("delete")) {
                 deleteBtn.click();
-            } else if (
-                command.includes("lanjut") ||
-                command.includes("continue")
-            ) {
+            } else if (command.includes("lanjut") || command.includes("continue")) {
                 if (continueBtn.style.display !== "none") {
                     continueBtn.click();
                 }
@@ -1520,11 +1472,8 @@ function handleVoiceCommand(command) {
                         break;
                     }
                 }
-            } else if (
-                command.includes("stiker") ||
-                command.includes("sticker") ||
-                command.includes("emoji")
-            ) {
+            } 
+            else if (command.includes("stiker") || command.includes("sticker") || command.includes("emoji")) {
                 for (const [stickerId, stickerName] of Object.entries(stickerNames)) {
                     if (command.includes(stickerName)) {
                         const stickerElement = document.querySelector(
@@ -1536,63 +1485,32 @@ function handleVoiceCommand(command) {
                         break;
                     }
                 }
-            } else if (
-                command.includes("template") ||
-                command.includes("bingkai")
-            ) {
-                if (command.includes("heart") || command.includes("hati")) {
-                    document
-                        .querySelector('.template-option[data-template="hearts"]')
-                        .click();
-                } else if (command.includes("star") || command.includes("bintang")) {
-                    document
-                        .querySelector('.template-option[data-template="stars"]')
-                        .click();
-                } else if (
-                    command.includes("flower") ||
-                    command.includes("bunga") ||
-                    command.includes("leaf")
-                ) {
-                    document
-                        .querySelector('.template-option[data-template="flowers"]')
-                        .click();
-                } else if (command.includes("music") || command.includes("musik")) {
-                    document
-                        .querySelector('.template-option[data-template="music"]')
-                        .click();
-                } else if (
-                    command.includes("balloon") ||
-                    command.includes("balon")
-                ) {
-                    document
-                        .querySelector('.template-option[data-template="balloons"]')
-                        .click();
-                } else if (
-                    command.includes("crown") ||
-                    command.includes("mahkota")
-                ) {
-                    document
-                        .querySelector('.template-option[data-template="crowns"]')
-                        .click();
-                }
-            } else if (
-                command.includes("ukuran bingkai") ||
-                command.includes("border size")
-            ) {
+            }
+            // Perubahan untuk ukuran bingkai
+            else if (command.includes("ukuran bingkai") || command.includes("border size")) {
                 if (command.includes("kecil") || command.includes("small")) {
-                    document
-                        .querySelector('.border-option[data-border-size="small"]')
-                        .click();
-                } else if (
-                    command.includes("besar") ||
-                    command.includes("large") ||
-                    command.includes("photobooth")
-                ) {
-                    document
-                        .querySelector('.border-option[data-border-size="large"]')
-                        .click();
+                    document.querySelector('.border-option[data-border-size="small"]').click();
+                } else if (command.includes("besar") || command.includes("large") || command.includes("photobooth")) {
+                    document.querySelector('.border-option[data-border-size="large"]').click();
                 }
-            } else if (command.includes("download") || command.includes("unduh")) {
+            }
+            // Perubahan untuk template border
+            else if (command.includes("template") || command.includes("bingkai")) {
+                if (command.includes("heart") || command.includes("hati")) {
+                    document.querySelector('.template-option[data-template="hearts"]').click();
+                } else if (command.includes("star") || command.includes("bintang")) {
+                    document.querySelector('.template-option[data-template="stars"]').click();
+                } else if (command.includes("flower") || command.includes("bunga") || command.includes("leaf")) {
+                    document.querySelector('.template-option[data-template="flowers"]').click();
+                } else if (command.includes("music") || command.includes("musik")) {
+                    document.querySelector('.template-option[data-template="music"]').click();
+                } else if (command.includes("balloon") || command.includes("balon")) {
+                    document.querySelector('.template-option[data-template="balloons"]').click();
+                } else if (command.includes("crown") || command.includes("mahkota")) {
+                    document.querySelector('.template-option[data-template="crowns"]').click();
+                }
+            }
+            else if (command.includes("download") || command.includes("unduh")) {
                 downloadBtn.click();
             }
             break;
