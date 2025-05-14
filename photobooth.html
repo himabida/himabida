@@ -1541,7 +1541,7 @@ function showPage(pageId) {
     }
 }
 
-// Inisialisasi Kamera
+// Inisialisasi Kamera (Versi Baru - Non Mirror)
 async function initCamera() {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({
@@ -1554,6 +1554,9 @@ async function initCamera() {
 
         mediaStream = stream;
         video.srcObject = stream;
+        
+        // Nonaktifkan mirror effect di preview kamera
+        video.style.transform = "scaleX(1)"; // Tidak dibalik (normal)
         await video.play();
     } catch (err) {
         console.error("Error kamera:", err);
@@ -1561,7 +1564,7 @@ async function initCamera() {
     }
 }
 
-// Hentikan Kamera
+// Hentikan Kamera (Tetap Sama)
 function stopCamera() {
     if (mediaStream) {
         mediaStream.getTracks().forEach((track) => track.stop());
@@ -1612,6 +1615,11 @@ function takePhoto() {
     canvas.width = targetWidth;
     canvas.height = targetHeight;
 
+    // Pastikan gambar tidak dibalik (non-mirror)
+    ctx.setTransform(1, 0, 0, 1, 0, 0); // Reset transformasi
+    ctx.filter = filters[currentFilter];
+
+    // Hitung posisi gambar (tanpa mirror)
     const videoAspect = video.videoWidth / video.videoHeight;
     const canvasAspect = targetWidth / targetHeight;
 
@@ -1629,18 +1637,17 @@ function takePhoto() {
         offsetY = (targetHeight - renderHeight) / 2;
     }
 
-    ctx.filter = filters[currentFilter];
+    // Gambar langsung ke canvas tanpa mirror
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(video, offsetX, offsetY, renderWidth, renderHeight);
 
-    video.style.filter = filters[currentFilter];
-
     const photoData = canvas.toDataURL("image/png");
     photos.push(photoData);
-    currentPose = photos.length; // update currentPose to photos.length
+    currentPose = photos.length;
 
     updatePhotoPreview();
 }
+
 
 // Update Preview Foto
 function updatePhotoPreview() {
