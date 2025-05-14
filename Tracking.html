@@ -599,7 +599,7 @@ main {
                 <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block sidebar collapsed">
                     <div class="position-sticky">
                         <div class="sidebar-header">
-                            <h3><i class="fas fa-wallet me-2"></i>Budget Genius</h3>
+                            <h3><i class="fas fa-wallet me-2"></i>CashFlow</h3>
                             <div class="user-info">
                                 <small id="sidebar-username">Nama Pengguna</small>
                             </div>
@@ -2116,17 +2116,19 @@ function renderSpendingChart(transactions) {
             ]
         },
         options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function(value) {
-                            return formatCurrency(value);
-                        }
-                    }
+    responsive: true,
+    animation: false, // Tambahkan ini
+    scales: {
+        y: {
+            beginAtZero: true,
+            ticks: {
+                callback: function(value) {
+                    return formatCurrency(value);
                 }
-            },
+            }
+        }
+    },
+    // ... opsi lainnya tetap sama
             plugins: {
                 tooltip: {
                     callbacks: {
@@ -2185,6 +2187,7 @@ function renderCategoryChart(transactions) {
         },
         options: {
             responsive: true,
+            animation: false, 
             plugins: {
                 legend: {
                     position: 'right',
