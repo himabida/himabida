@@ -35,7 +35,22 @@ body {
     margin: 0;
     overflow-x: hidden;
 }
+      
+/* Pastikan card dan chart nggak punya animasi */
+.card, .card-body, #spendingChart, #categoryChart {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+}
 
+/* Stabilkan ukuran chart */
+#spendingChart, #categoryChart {
+    width: 100% !important;
+    height: 250px !important;
+    max-width: 100% !important;
+    max-height: 250px !important;
+}
 /* Login Styles */
 #loginModal .modal-content, #registerModal .modal-content {
     border-radius: 0.5rem;
