@@ -1694,7 +1694,6 @@ function setupRoomListeners() {
     });
 }
 
-
 function movePlayer(steps) {
     return new Promise((resolve) => {
         const player = players.find(p => p.id === myPlayerId);
@@ -1707,7 +1706,6 @@ function movePlayer(steps) {
             if (currentPos < targetPos) {
                 currentPos++;
                 
-                // Update position di Firebase dan lokal
                 roomRef.child('players/' + myPlayerId + '/position').set(currentPos)
                     .then(() => {
                         positions[player.name] = currentPos;
@@ -1719,7 +1717,14 @@ function movePlayer(steps) {
                                 showWinner(player);
                                 resolve();
                             } else {
-                                handleOnlineSnakesLadders(player).then(resolve);
+                                // Tambahkan pengecekan apakah ini player saat ini
+                                roomRef.child('currentPlayer').once('value', snap => {
+                                    if (snap.val() === myPlayerId) {
+                                        handleOnlineSnakesLadders(player).then(resolve);
+                                    } else {
+                                        resolve();
+                                    }
+                                });
                             }
                         }
                     });
@@ -1727,6 +1732,7 @@ function movePlayer(steps) {
         }, 300);
     });
 }
+
 function handleOnlineSnakesLadders(player) {
     return roomRef.once('value').then(snapshot => {
         const roomData = snapshot.val();
@@ -1739,8 +1745,16 @@ function handleOnlineSnakesLadders(player) {
         } else {
             return checkOnlineTruthDare();
         }
+    }).then(shouldContinue => {
+        // Pastikan nextPlayer dipanggil jika diperlukan
+        if (shouldContinue !== false) {
+            return nextPlayer();
+        }
+        return Promise.resolve();
     });
 }
+
+
 
 function movePlayerToPosition(player, targetPos, direction) {
     return new Promise((resolve) => {
@@ -1768,6 +1782,48 @@ function movePlayerToPosition(player, targetPos, direction) {
     });
 }
 
+ function checkTruthDare() {
+    if (isOnlineGame) {
+        return checkOnlineTruthDare();
+    } else {
+        return checkOfflineTruthDare();
+    }
+}
+
+function checkOfflineTruthDare() {
+    const player = players[currentPlayer];
+    const rollBtn = document.getElementById('roll-btn');
+    
+    if (warningCells.includes(positions[player.name])) {
+        if (taskMode === 'manual' && customTasks[positions[player.name]]) {
+            const cellTasks = customTasks[positions[player.name]];
+            const randomTask = cellTasks[Math.floor(Math.random() * cellTasks.length)];
+            
+            document.getElementById('task-result').innerHTML = `
+                <div class="task-card">
+                    <h3>${randomTask.type.toUpperCase()}</h3>
+                    <p>${randomTask.text}</p>
+                    <p class="task-item-cell">Dibuat oleh: ${randomTask.player || 'Sistem'}</p>
+                </div>
+            `;
+            
+            document.getElementById('truth-btn').style.display = 'none';
+            document.getElementById('dare-btn').style.display = 'none';
+            document.getElementById('continue-btn').style.display = 'block';
+            document.getElementById('truth-dare-modal').style.display = 'flex';
+            return Promise.resolve(false);
+        } else if (taskMode === 'system') {
+            document.getElementById('truth-dare-modal').style.display = 'flex';
+            document.getElementById('task-result').innerHTML = '';
+            document.getElementById('truth-btn').style.display = 'inline-block';
+            document.getElementById('dare-btn').style.display = 'inline-block';
+            document.getElementById('continue-btn').style.display = 'none';
+            return Promise.resolve(false);
+        }
+    }
+    return Promise.resolve(true);
+}
+
 function checkOnlineTruthDare() {
     return roomRef.once('value').then(snapshot => {
         const roomData = snapshot.val();
@@ -1782,10 +1838,6 @@ function checkOnlineTruthDare() {
             return false;
         }
         return true;
-    }).then(shouldContinue => {
-        if (shouldContinue) {
-            return nextPlayer();
-        }
     });
 }
 
@@ -1944,32 +1996,18 @@ function updateGameUI(roomData) {
         totalPlayers++;
     });
 
-    // Update start button for host
+      // Update start button for host
     if (isHost) {
         const startBtn = document.getElementById('host-start-btn');
         const isManualMode = roomData.taskMode === 'manual';
 
-        // Enable start button if:
-        // 1. Game status is "waiting"
-        // 2. At least 2 players
-        // 3. All players are ready
-        // 4. For manual mode, all players have completed tasks
+        // Perbaikan kondisi:
         const canStart = roomData.status === "waiting" && 
                          totalPlayers >= 2 && 
                          readyCount === totalPlayers && 
-                         (!isManualMode || tasksCompletedCount === totalPlayers);
+                         (!isManualMode || (isManualMode && tasksCompletedCount === totalPlayers));
 
         startBtn.disabled = !canStart;
-
-        // Debugging log
-        console.log('Start Button Status:', {
-            status: roomData.status,
-            totalPlayers,
-            readyCount,
-            tasksCompletedCount,
-            isManualMode,
-            canStart
-        });
     }
 }
 
