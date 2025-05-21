@@ -1782,47 +1782,7 @@ function movePlayerToPosition(player, targetPos, direction) {
     });
 }
 
- function checkTruthDare() {
-    if (isOnlineGame) {
-        return checkOnlineTruthDare();
-    } else {
-        return checkOfflineTruthDare();
-    }
-}
-
-function checkOfflineTruthDare() {
-    const player = players[currentPlayer];
-    const rollBtn = document.getElementById('roll-btn');
-    
-    if (warningCells.includes(positions[player.name])) {
-        if (taskMode === 'manual' && customTasks[positions[player.name]]) {
-            const cellTasks = customTasks[positions[player.name]];
-            const randomTask = cellTasks[Math.floor(Math.random() * cellTasks.length)];
-            
-            document.getElementById('task-result').innerHTML = `
-                <div class="task-card">
-                    <h3>${randomTask.type.toUpperCase()}</h3>
-                    <p>${randomTask.text}</p>
-                    <p class="task-item-cell">Dibuat oleh: ${randomTask.player || 'Sistem'}</p>
-                </div>
-            `;
-            
-            document.getElementById('truth-btn').style.display = 'none';
-            document.getElementById('dare-btn').style.display = 'none';
-            document.getElementById('continue-btn').style.display = 'block';
-            document.getElementById('truth-dare-modal').style.display = 'flex';
-            return Promise.resolve(false);
-        } else if (taskMode === 'system') {
-            document.getElementById('truth-dare-modal').style.display = 'flex';
-            document.getElementById('task-result').innerHTML = '';
-            document.getElementById('truth-btn').style.display = 'inline-block';
-            document.getElementById('dare-btn').style.display = 'inline-block';
-            document.getElementById('continue-btn').style.display = 'none';
-            return Promise.resolve(false);
-        }
-    }
-    return Promise.resolve(true);
-}
+ 
 
 function checkOnlineTruthDare() {
     return roomRef.once('value').then(snapshot => {
@@ -1920,7 +1880,7 @@ function startGame() {
             throw new Error("Masih ada pemain yang belum ready!");
         }
 
-        // Cek apakah semua pemain telah menyelesaikan tantangan di mode manual
+        // Untuk mode system, tidak perlu cek tasksCompleted
         if (roomData.taskMode === 'manual') {
             const allTasksCompleted = Object.values(playersData).every(player => player.tasksCompleted);
             if (!allTasksCompleted) {
@@ -1936,7 +1896,6 @@ function startGame() {
         });
     }).then(() => {
         console.log("Game started successfully!");
-        // Pastikan transisi ke layar game
         switchScreen('game-screen');
         initVoiceControl();
         return Promise.resolve();
@@ -1946,7 +1905,6 @@ function startGame() {
         return Promise.reject(error);
     });
 }
-
 
 function leaveRoom() {
     if (!roomCode || !myPlayerId) return Promise.resolve();
@@ -1989,19 +1947,18 @@ function updateGameUI(roomData) {
 
     Object.keys(playersData).forEach(id => {
         const player = playersData[id];
-        const statusText = player.ready ? 'Ready' : (player.tasksCompleted ? 'Tasks Done' : 'Waiting');
-        addPlayerToList(player.name, id, id === roomData.host, player.tasksCompleted, statusText);
+        const statusText = player.ready ? 'Ready' : 'Waiting';
+        addPlayerToList(player.name, id, id === roomData.host, player.ready, statusText);
         if (player.ready) readyCount++;
-        if (player.tasksCompleted) tasksCompletedCount++;
         totalPlayers++;
     });
 
-      // Update start button for host
+    // Update start button for host
     if (isHost) {
         const startBtn = document.getElementById('host-start-btn');
         const isManualMode = roomData.taskMode === 'manual';
 
-        // Perbaikan kondisi:
+        // Pengecekan yang lebih sederhana:
         const canStart = roomData.status === "waiting" && 
                          totalPlayers >= 2 && 
                          readyCount === totalPlayers && 
@@ -2010,7 +1967,6 @@ function updateGameUI(roomData) {
         startBtn.disabled = !canStart;
     }
 }
-
 
 function onPlayerJoined(player) {
     console.log('Player joined:', player.name);
@@ -2259,30 +2215,24 @@ document.getElementById('guest-ready-btn').onclick = function() {
     if (!isHost && roomRef && myPlayerId) {
         roomRef.once('value').then(snapshot => {
             const roomData = snapshot.val();
+            const updateData = { ready: true };
+            
             if (roomData.taskMode === 'manual') {
-                return roomRef.child('players/' + myPlayerId).once('value').then(playerSnapshot => {
-                    const player = playerSnapshot.val();
-                    if (!player.tasksCompleted) {
-                        alert("Silakan buat tantangan terlebih dahulu!");
-                        return;
-                    }
-                    return roomRef.child('players/' + myPlayerId).update({
-                        ready: true,
-                        tasksCompleted: true
+                return roomRef.child('players/' + myPlayerId).once('value')
+                    .then(playerSnapshot => {
+                        if (!playerSnapshot.val().tasksCompleted) {
+                            throw new Error("Silakan buat tantangan terlebih dahulu!");
+                        }
+                        return updateData;
                     });
-                });
-            } else {
-                return roomRef.child('players/' + myPlayerId).update({
-                    ready: true
-                });
             }
+            return updateData;
+        }).then(updateData => {
+            return roomRef.child('players/' + myPlayerId).update(updateData);
         }).then(() => {
-            console.log(`Pemain ${myPlayerId} berhasil set ready`);
-            alert("Status Anda sudah siap! Menunggu host memulai game...");
             document.getElementById('guest-ready-btn').disabled = true;
         }).catch(error => {
-            console.error("Gagal set ready:", error);
-            alert("Error: " + error.message);
+            alert(error.message);
         });
     }
 };
@@ -2557,14 +2507,24 @@ function addPlayerToList(name, id, isAdmin = false, tasksCompleted = false, stat
 function updateStartButton() {
     if (!isHost) return;
     
-    const playerCount = document.getElementById('host-player-list').children.length;
-    const startBtn = document.getElementById('host-start-btn');
-    
-    if (playerCount >= 2) {
-        startBtn.disabled = false;
-    } else {
-        startBtn.disabled = true;
-    }
+    roomRef.once('value').then(snapshot => {
+        const roomData = snapshot.val();
+        if (!roomData) return;
+
+        const playerCount = Object.keys(roomData.players || {}).length;
+        const readyCount = Object.values(roomData.players || {}).filter(p => p.ready).length;
+        const startBtn = document.getElementById('host-start-btn');
+
+        // Untuk mode system, cukup cek readyCount
+        if (roomData.taskMode === 'system') {
+            startBtn.disabled = !(playerCount >= 2 && readyCount === playerCount);
+        } 
+        // Untuk mode manual, cek tasksCompleted juga
+        else {
+            const tasksCompletedCount = Object.values(roomData.players || {}).filter(p => p.tasksCompleted).length;
+            startBtn.disabled = !(playerCount >= 2 && readyCount === playerCount && tasksCompletedCount === playerCount);
+        }
+    });
 }
 
 // === GAME LOGIC ===
@@ -2675,32 +2635,42 @@ function handleSnakesAndLadders(player) {
 }
 
 function checkTruthDare() {
+function checkTruthDare() {
     const player = players[currentPlayer];
     const rollBtn = document.getElementById('roll-btn');
     
     if (warningCells.includes(positions[player.name])) {
         if (taskMode === 'manual' && customTasks[positions[player.name]]) {
             const cellTasks = customTasks[positions[player.name]];
-            const randomTask = cellTasks[Math.floor(Math.random() * cellTasks.length)];
-            
-            document.getElementById('task-result').innerHTML = `
-                <div class="task-card">
-                    <h3>${randomTask.type.toUpperCase()}</h3>
-                    <p>${randomTask.text}</p>
-                    <p class="task-item-cell">Dibuat oleh: ${randomTask.player || 'Sistem'}</p>
-                </div>
-            `;
-            
-            document.getElementById('truth-btn').style.display = 'none';
-            document.getElementById('dare-btn').style.display = 'none';
-            document.getElementById('continue-btn').style.display = 'block';
-            document.getElementById('truth-dare-modal').style.display = 'flex';
-        } else {
+            if (cellTasks && cellTasks.length > 0) {
+                const randomTask = cellTasks[Math.floor(Math.random() * cellTasks.length)];
+                
+                document.getElementById('task-result').innerHTML = `
+                    <div class="task-card">
+                        <h3>${randomTask.type.toUpperCase()}</h3>
+                        <p>${randomTask.text}</p>
+                        <p class="task-item-cell">Dibuat oleh: ${randomTask.player || 'Sistem'}</p>
+                    </div>
+                `;
+                
+                document.getElementById('truth-btn').style.display = 'none';
+                document.getElementById('dare-btn').style.display = 'none';
+                document.getElementById('continue-btn').style.display = 'block';
+                document.getElementById('truth-dare-modal').style.display = 'flex';
+                return;
+            }
+        }
+        
+        // Hanya tampilkan pilihan truth/dare jika mode system atau tidak ada custom task
+        if (taskMode === 'system') {
             document.getElementById('truth-dare-modal').style.display = 'flex';
             document.getElementById('task-result').innerHTML = '';
             document.getElementById('truth-btn').style.display = 'inline-block';
             document.getElementById('dare-btn').style.display = 'inline-block';
             document.getElementById('continue-btn').style.display = 'none';
+        } else {
+            // Jika mode manual tapi tidak ada task untuk cell ini, lanjutkan
+            nextPlayer();
         }
     } else {
         nextPlayer();
