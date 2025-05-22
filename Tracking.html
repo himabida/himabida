@@ -399,6 +399,108 @@
       background-color: rgba(0, 0, 0, 0.02);
     }
 
+
+  .chatbot-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 350px;
+    z-index: 1000;
+    font-family: 'Nunito', sans-serif;
+  }
+
+  .chatbot-toggle {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
+  }
+
+  .chatbot-toggle:hover {
+    transform: scale(1.1);
+  }
+
+  .chatbot-window {
+    background-color: var(--card-bg);
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: none;
+    height: 500px;
+    flex-direction: column;
+  }
+
+  .chatbot-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+    color: white;
+    padding: 15px;
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .chatbot-messages {
+    flex-grow: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .message {
+    max-width: 80%;
+    padding: 10px 15px;
+    border-radius: 18px;
+    line-height: 1.4;
+  }
+
+  .user-message {
+    align-self: flex-end;
+    background-color: var(--primary-light);
+    color: white;
+    border-bottom-right-radius: 5px;
+  }
+
+  .bot-message {
+    align-self: flex-start;
+    background-color: var(--light-color);
+    color: var(--text-color);
+    border-bottom-left-radius: 5px;
+  }
+
+  .chatbot-input {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid var(--border-color);
+  }
+
+  #chatbot-question {
+    flex-grow: 1;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 10px 15px;
+    outline: none;
+  }
+
+  #send-question {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    margin-left: 10px;
+    cursor: pointer;
+  }
     /* AI Insights */
     .insight-container {
       min-height: 200px;
@@ -1630,6 +1732,29 @@
         </div>
     </div>
 </div>
+
+ <!-- Chatbot Widget -->
+<div class="chatbot-container">
+  <div class="chatbot-window" id="chatbot-window">
+    <div class="chatbot-header">
+      <span>BisDig Assistant</span>
+      <button id="close-chatbot">&times;</button>
+    </div>
+    <div class="chatbot-messages" id="chatbot-messages">
+      <div class="message bot-message">
+        Hai! Saya asisten keuangan Anda. Bisa tanyakan apa saja tentang data Anda, contoh: 
+        <br><br>"Bulan depan saya harus jual baju di mana berdasarkan data 3 bulan terakhir?"
+      </div>
+    </div>
+    <div class="chatbot-input">
+      <input type="text" id="chatbot-question" placeholder="Tulis pertanyaan...">
+      <button id="send-question"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+  <button class="chatbot-toggle" id="chatbot-toggle">
+    <i class="fas fa-robot"></i>
+  </button>
+</div>   
 
 <!-- Dark Mode Toggle -->
 <div class="dark-mode-toggle" id="darkModeToggle">
@@ -3570,6 +3695,141 @@ function generateInsights() {
             
             alert('Semua data telah direset ke kondisi awal');
         }
+
+        // Chatbot Functionality
+document.addEventListener('DOMContentLoaded', function() {
+  const chatbotToggle = document.getElementById('chatbot-toggle');
+  const chatbotWindow = document.getElementById('chatbot-window');
+  const closeChatbot = document.getElementById('close-chatbot');
+  const chatbotMessages = document.getElementById('chatbot-messages');
+  const chatbotQuestion = document.getElementById('chatbot-question');
+  const sendQuestion = document.getElementById('send-question');
+
+  // Toggle chatbot window
+  chatbotToggle.addEventListener('click', function() {
+    chatbotWindow.style.display = chatbotWindow.style.display === 'flex' ? 'none' : 'flex';
+  });
+
+  closeChatbot.addEventListener('click', function() {
+    chatbotWindow.style.display = 'none';
+  });
+
+  // Handle questions
+  sendQuestion.addEventListener('click', processQuestion);
+  chatbotQuestion.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') processQuestion();
+  });
+
+  function processQuestion() {
+    const question = chatbotQuestion.value.trim();
+    if (!question) return;
+
+    // Add user message
+    addMessage(question, 'user');
+    chatbotQuestion.value = '';
+
+    // Show loading
+    addMessage('Memproses pertanyaan...', 'bot', true);
+
+    // Process question (will be replaced with real AI)
+    setTimeout(() => {
+      // Remove loading
+      chatbotMessages.lastChild.remove();
+      
+      // Get answer based on user data
+      const answer = generateAnswer(question);
+      addMessage(answer, 'bot');
+    }, 1500);
+  }
+
+  function addMessage(text, sender, isTemp = false) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${sender}-message`;
+    messageDiv.textContent = text;
+    
+    if (isTemp) {
+      messageDiv.id = 'temp-message';
+    }
+    
+    chatbotMessages.appendChild(messageDiv);
+    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+  }
+
+  function generateAnswer(question) {
+    if (!state.currentUser) return "Silakan login untuk mengakses data Anda.";
+    
+    const userData = state.users[state.currentUser];
+    const transactions = filterTransactionsByPeriod();
+    
+    // Contoh analisis sederhana
+    if (question.includes("jual baju") && question.includes("bulan")) {
+      const salesData = analyzeClothingSales(transactions);
+      return `Berdasarkan data 3 bulan terakhir:\n` +
+             `- Penjualan tertinggi di: ${salesData.bestLocation}\n` +
+             `- Rata-rata penjualan: ${formatCurrency(salesData.avgSales)}\n` +
+             `- Rekomendasi: Fokuskan penjualan di ${salesData.recommendedLocation} bulan depan.`;
+    }
+    
+    return "Saya belum bisa menjawab pertanyaan itu. Coba tanyakan tentang data penjualan atau pengeluaran Anda.";
+  }
+
+  function analyzeClothingSales(transactions) {
+    // Contoh logika analisis (sesuaikan dengan struktur data Anda)
+    const clothingSales = transactions.filter(t => 
+      t.description.toLowerCase().includes("baju") && t.type === "income"
+    );
+    
+    // Logika dummy - ganti dengan analisis real dari database
+    return {
+      bestLocation: "Pasar Minggu",
+      avgSales: clothingSales.reduce((sum, t) => sum + t.amount, 0) / (clothingSales.length || 1),
+      recommendedLocation: "Pasar Santa"
+    };
+  }
+});
+
+        async function generateAnswer(question) {
+  if (!state.currentUser) return "Silakan login untuk mengakses data Anda.";
+
+  try {
+    // Ambil data transaksi dari Firebase
+    const snapshot = await database.ref(`users/${state.currentUser}/transactions`).once('value');
+    const transactions = snapshot.val() || [];
+    
+    // Analisis berdasarkan pertanyaan
+    if (question.includes("pengeluaran tertinggi")) {
+      const topExpenses = getTopExpenses(transactions);
+      return formatExpenseAnalysis(topExpenses);
+    }
+    
+    // Tambahkan logika analisis lainnya...
+    
+  } catch (error) {
+    console.error("Error accessing data:", error);
+    return "Terjadi kesalahan saat memproses data.";
+  }
+}
+
+function getTopExpenses(transactions) {
+  const expenseMap = {};
+  
+  transactions.filter(t => t.type === "expense").forEach(t => {
+    const category = state.categories.find(c => c.id === t.categoryId)?.name || "Lainnya";
+    expenseMap[category] = (expenseMap[category] || 0) + t.amount;
+  });
+  
+  return Object.entries(expenseMap)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 3);
+}
+
+function formatExpenseAnalysis(topExpenses) {
+  let response = "📊 Pengeluaran Tertinggi Anda:\n\n";
+  topExpenses.forEach(([category, amount], index) => {
+    response += `${index + 1}. ${category}: ${formatCurrency(amount)}\n`;
+  });
+  return response;
+}
 // Initialize the app when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     // Check auth state
